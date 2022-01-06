@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="//fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+        <link rel="icon" href="/img/favicon.png" />
+
+        <link rel="stylesheet" href="/css/core.css" />
+        <script src="/js/core.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/pin.css" />
+        <script src="/js/widget/pin.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/pin-screen.css" />
+        <script src="/js/widget/pin-screen.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>BCH Merchant POS</title>
+    </head>
+
+    <body>
+        <div id="main"></div>
+
+        <div id="templates">
+            <div class="pin">
+                <div class="pin-input">
+                    <input type="password" maxlength="1" autocomplete="off">
+                    <input type="password" maxlength="1" autocomplete="off">
+                    <input type="password" maxlength="1" autocomplete="off">
+                    <input type="password" maxlength="1" autocomplete="off">
+                </div>
+                <div class="pin-label">Create PIN Code</div>
+            </div>
+            <div class="pin-screen">
+                <div class="active-widget"></div>
+                <div class="error-message hidden"></div>
+            </div>
+        </div>
+
+        <script src="/js/init.js"></script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+.pin-screen .pin {
+    margin: auto;
+}
+
+.pin-screen .error-message {
+    background-color: #8D0000;
+    padding: 0.5em;
+    margin-top: 1em;
+    text-align: center;
+    border-radius: 0.25em;
+    color: #F0F0F0;
+}
+
+.pin-screen .error-message.hidden {
+    display: none;
+}

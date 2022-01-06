@@ -1,0 +1,18 @@
+html, body {
+    height: 100vh;
+    background-color: #202020;
+    color: #AAAAAA;
+}
+body {
+    margin: auto;
+    padding-top: 2em;
+    width: 75%;
+    min-width: 600px;
+    min-height: 600px;
+
+    font-family: 'Open Sans', sans-serif;
+}
+
+#templates {
+    display: none;
+}
