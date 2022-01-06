@@ -6,13 +6,30 @@ html, body {
 body {
     margin: auto;
     padding-top: 2em;
+    padding-bottom: 2em;
     width: 75%;
-    min-width: 600px;
-    min-height: 600px;
 
     font-family: 'Open Sans', sans-serif;
 }
 
+html, body, #main {
+    min-width: 600px;
+    min-height: 100vw;
+}
+
+a, a:active, a:visited {
+    text-decoration: none;
+    color: #58C38E;
+}
+
 #templates {
     display: none;
+}
+
+#attribution {
+    margin-top: 5em;
+    padding-bottom: 0.5em;
+    text-align: center;
+    font-size: 0.75em;
+    color: #757575;
 }

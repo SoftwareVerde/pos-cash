@@ -1,0 +1,10 @@
+.settings-screen .active-widget {
+    border-radius: 1em;
+    background-color: #303030;
+    padding: 1em;
+}
+
+.settings-screen .active-widget .setting {
+    margin-bottom: 2em;
+}
+

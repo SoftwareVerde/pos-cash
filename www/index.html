@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
         <link href="//fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
 
         <link rel="icon" href="/img/favicon.png" />
@@ -16,6 +16,15 @@
         <link rel="stylesheet" href="/css/widget/pin-screen.css" />
         <script src="/js/widget/pin-screen.js"></script>
 
+        <link rel="stylesheet" href="/css/widget/setting.css" />
+        <script src="/js/widget/setting.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/settings-screen.css" />
+        <script src="/js/widget/settings-screen.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/checkout-screen.css" />
+        <script src="/js/widget/checkout-screen.js"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>BCH Merchant POS</title>
@@ -27,10 +36,10 @@
         <div id="templates">
             <div class="pin">
                 <div class="pin-input">
-                    <input type="password" maxlength="1" autocomplete="off">
-                    <input type="password" maxlength="1" autocomplete="off">
-                    <input type="password" maxlength="1" autocomplete="off">
-                    <input type="password" maxlength="1" autocomplete="off">
+                    <input type="password" maxlength="1" autocomplete="off" />
+                    <input type="password" maxlength="1" autocomplete="off" />
+                    <input type="password" maxlength="1" autocomplete="off" />
+                    <input type="password" maxlength="1" autocomplete="off" />
                 </div>
                 <div class="pin-label">Create PIN Code</div>
             </div>
@@ -38,6 +47,19 @@
                 <div class="active-widget"></div>
                 <div class="error-message hidden"></div>
             </div>
+            <div class="setting">
+                <img class="setting-icon" />
+                <div class="setting-label"></div>
+                <div class="setting-value"></div>
+            </div>
+            <div class="settings-screen">
+                <div class="active-widget"></div>
+            </div>
+            <div class="checkout-screen">Checkout</div>
+        </div>
+
+        <div id="attribution">
+            <div>Icons made by <a href="//www.flaticon.com/authors/pikselan" title="Pikselan">Pikselan</a> from <a href="//www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
 
         <script src="/js/init.js"></script>
