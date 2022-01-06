@@ -13,7 +13,7 @@
     top: calc(50vh - 25vh);
     left: calc(50vw - 15vw);
     width: 30vw;
-    height: 50vh;
+    height: 20em;
     background: #101010CC;
     background: linear-gradient(23deg, #000000, #00000050);
     padding: 1em;
@@ -25,6 +25,11 @@
     text-align: center;
     margin-bottom: 1em;
     font-size: 1.5em;
+}
+
+.settings-screen-dialog .text {
+    padding: 0.5em;
+    text-align: center;
 }
 
 .settings-screen-dialog .dialog-input {
@@ -50,7 +55,7 @@
 }
 
 .settings-screen-dialog .buttons .button {
-    width: 28%;
+    width: 25%;
     display: inline-block;
     box-sizing: border-box;
     border: solid 1px #FFFFFF;
@@ -69,9 +74,17 @@
     color: #202020;
     background-color: #58C38E;
 }
+.settings-screen-dialog .buttons .button.destroy {
+    color: #202020;
+    background-color: #C45858;
+}
 .settings-screen-dialog .buttons .button.cancel {
     background-color: #CCCCCC;
     color: #858585;
+}
+.settings-screen-dialog .buttons .button.left {
+    position: absolute;
+    left: 0.5em;
 }
 
 .settings-screen-dialog .currency-list {
@@ -95,6 +108,7 @@
     margin-right: 1em;
     margin-top: -0.2em;
     width: 3em;
+    height: 3em;
 }
 .settings-screen-dialog .currency-list .currency-list-item .country-name {
     font-weight: 800;

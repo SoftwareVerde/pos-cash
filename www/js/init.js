@@ -67,6 +67,19 @@ class App {
         }
         return null;
     }
+
+    static isMultiTerminalEnabled() {
+        const localStorage = window.localStorage;
+        const isEnabled = localStorage.getItem("multiTerminalIsEnabled");
+
+        if (isEnabled == null) { return false; }
+        return (isEnabled ? true : false);
+    }
+
+    static setMultiTerminalIsEnabled(isEnabled) {
+        const localStorage = window.localStorage;
+        return localStorage.setItem("multiTerminalIsEnabled", (isEnabled ? true : false));
+    }
 }
 
 window.setTimeout(function() {

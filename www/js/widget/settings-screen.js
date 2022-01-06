@@ -1,9 +1,14 @@
 class SettingsScreen {
-    static createEditDialog(dialogTemplate, label, value) {
+    static createEditDialog(dialogTemplate, label, value, text) {
         const dialogWidget = dialogTemplate.cloneNode(true);
 
         const dialogTitle = dialogWidget.querySelector(".dialog-label");
         dialogTitle.textContent = label || "";
+
+        const textElement = dialogWidget.querySelector(".text");
+        if (textElement) {
+            textElement.textContent = text || "";
+        }
 
         const dialogInput = dialogWidget.querySelector(".dialog-input");
         dialogWidget.onComplete = null;
@@ -69,6 +74,22 @@ class SettingsScreen {
         const template = SettingsScreen.template;
         const widget = template.cloneNode(true);
 
+        const closeDialogOnEscape = function(dialogWidget) {
+            window.onkeyup = function(event) {
+                event = event || window.event;
+
+                const keyCode = event.keyCode;
+                if (keyCode == Util.KeyCodes.escape) {
+                    clearDialog();
+                    window.onkeyup = null;
+                }
+            };
+            dialogWidget.onClose = function() {
+                window.onkeyup = null; // Unset the global onkeypress.
+            };
+
+        };
+
         const clearDialog = function() {
             const dialogs = widget.querySelectorAll(".settings-screen-dialog");
             for (let i = 0; i < dialogs.length; i += 1) {
@@ -101,6 +122,8 @@ class SettingsScreen {
                 App.setMerchantName(value);
             };
 
+            closeDialogOnEscape(dialogWidget);
+
             clearDialog();
             widget.appendChild(dialogWidget);
         };
@@ -119,6 +142,21 @@ class SettingsScreen {
                 destinationAddressSetting.setValue(value);
                 destinationAddressSetting.setDisplayValue(value || "...");
                 App.setDestinationAddress(value);
+            };
+
+            closeDialogOnEscape(dialogWidget);
+
+            window.onkeyup = function(event) {
+                event = event || window.event;
+
+                const keyCode = event.keyCode;
+                if (keyCode == Util.KeyCodes.escape) {
+                    clearDialog();
+                    window.onkeyup = null;
+                }
+            };
+            dialogWidget.onClose = function() {
+                window.onkeyup = null; // Unset the global onkeypress.
             };
 
             clearDialog();
@@ -174,10 +212,6 @@ class SettingsScreen {
                 items.push(item);
             }
 
-            dialogWidget.onClose = function() {
-                window.onkeypress = null; // Unset the global onkeypress.
-            };
-
             clearDialog();
             widget.appendChild(dialogWidget);
 
@@ -204,8 +238,12 @@ class SettingsScreen {
                 if (selectedItem) {
                     selectedItem.scrollIntoView();
                 }
-                
             };
+            dialogWidget.onClose = function() {
+                window.onkeypress = null; // Unset the global onkeypress.
+            };
+
+            closeDialogOnEscape(dialogWidget);
         };
         widget.addWidget(localCurrencySetting);
 
@@ -216,8 +254,21 @@ class SettingsScreen {
 
             widget.remove();
 
+            window.onkeyup = function(event) {
+                event = event || window.event;
+
+                const keyCode = event.keyCode;
+                if (keyCode == Util.KeyCodes.escape) {
+                    const settingsScreen = SettingsScreen.create();
+                    App.setScreen(settingsScreen);
+                    window.onkeyup = null; // Unset the escape handler.
+                }
+            };
+
             const pinScreen = PinScreen.create();
             pinScreen.onComplete = function(value) {
+                window.onkeyup = null; // Unset the escape handler.
+
                 App.setPin(value);
 
                 const settingsScreen = SettingsScreen.create();
@@ -233,7 +284,33 @@ class SettingsScreen {
         widget.addWidget(pinSetting);
 
         // Multi-terminal Setting Widget
-        const multiTerminalSetting = Setting.create("Multi-terminal", "/img/terminal.png", "Disabled");
+        const multiTerminalIsEnabled = App.isMultiTerminalEnabled();
+        const multiTerminalSetting = Setting.create("Multi-terminal", "/img/terminal.png", (multiTerminalIsEnabled ? "Enabled" : "Disabled"));
+        multiTerminalSetting.onClick = function() {
+            const label = multiTerminalSetting.getLabel();
+
+            const dialogTemplate = SettingsScreen.editMultiTerminalDialogTemplate;
+            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, multiTerminalIsEnabled, "For merchants using the same address across multiple terminals.");
+            dialogWidget.onComplete = function() {
+                multiTerminalSetting.setValue(true);
+                multiTerminalSetting.setDisplayValue("Enabled");
+                App.setMultiTerminalIsEnabled(true);
+            };
+
+            const disableButton = dialogWidget.querySelector(".disable");
+            disableButton.onclick = function() {
+                multiTerminalSetting.setValue(false);
+                multiTerminalSetting.setDisplayValue("Disabled");
+                App.setMultiTerminalIsEnabled(false);
+
+                clearDialog();
+            };
+
+            closeDialogOnEscape(dialogWidget);
+
+            clearDialog();
+            widget.appendChild(dialogWidget);
+        };
         widget.addWidget(multiTerminalSetting);
 
         return widget;
@@ -247,4 +324,5 @@ window.setTimeout(function() {
     SettingsScreen.editDestinationAddressDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-destination-address");
     SettingsScreen.editLocalCurrencyDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-local-currency");
     SettingsScreen.currencyListItemTemplate = templates.querySelector(".currency-list-item");
+    SettingsScreen.editMultiTerminalDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-multi-terminal");
 }, 0);
