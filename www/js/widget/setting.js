@@ -4,8 +4,13 @@ class Setting {
         const widget = template.cloneNode(true);
 
         widget.setLabel = function(title) {
+            widget.label = title;
+
             const label = widget.querySelector(".setting-label");
             label.textContent = title;
+        };
+        widget.getLabel = function() {
+            return widget.label;
         };
 
         widget.setIcon = function(iconUrl) {
@@ -18,10 +23,22 @@ class Setting {
             value.textContent = displayValue;
         };
 
+        widget.value = null;
+        widget.setValue = function(value) {
+            widget.value = value;
+        };
+
+        widget.getValue = function() {
+            return widget.value;
+        };
+
         widget.onclick = function(event) {
             event = event || window.event;
 
-            // TODO
+            const callback = widget.onClick;
+            if (typeof callback == "function") {
+                callback(widget);
+            }
         };
 
         widget.setLabel(title);

@@ -8,3 +8,68 @@
     margin-bottom: 2em;
 }
 
+.settings-screen-dialog {
+    position: fixed;
+    top: calc(50vh - 25vh);
+    left: calc(50vw - 15vw);
+    width: 30vw;
+    height: 50vh;
+    background: #101010CC;
+    background: linear-gradient(23deg, #000000, #00000050);
+    padding: 1em;
+    border-radius: 0.5em;
+    border: solid 2px #000000;
+}
+
+.settings-screen-dialog .dialog-label {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 1.5em;
+}
+
+.settings-screen-dialog .dialog-input {
+    width: 85%;
+    margin: auto;
+    margin-top: 2em;
+    display: block;
+    box-sizing: border-box;
+    background-color: #FFFFFFBB;
+    border: solid 1px #FFFFFFCC;
+    padding: 0.25em;
+    font-size: 1.5em;
+    border-radius: 0.25em;
+}
+
+.settings-screen-dialog .buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    text-align: right;
+}
+
+.settings-screen-dialog .buttons .button {
+    width: 28%;
+    display: inline-block;
+    box-sizing: border-box;
+    border: solid 1px #FFFFFF;
+    border-radius: 0.5em;
+    background-color: #EEEEEE;
+    line-height: 3em;
+    margin: 1em;
+    margin-left: 0.5em;
+    text-align: center;
+    cursor: pointer;
+}
+.settings-screen-dialog .buttons .button:hover {
+    background-color: #F0F0F0 !important;
+}
+.settings-screen-dialog .buttons .button.confirm {
+    color: #202020;
+    background-color: #58C38E;
+}
+.settings-screen-dialog .buttons .button.cancel {
+    background-color: #CCCCCC;
+    color: #858585;
+}
