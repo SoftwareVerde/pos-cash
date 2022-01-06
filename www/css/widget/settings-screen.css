@@ -73,3 +73,33 @@
     background-color: #CCCCCC;
     color: #858585;
 }
+
+.settings-screen-dialog .currency-list {
+    overflow-y: scroll;
+    height: 50%;
+    background-color: #FFFFFF10;
+    padding: 0.5em;
+}
+.settings-screen-dialog .currency-list .currency-list-item {
+    border-bottom: solid 2px #000000;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    cursor: pointer;
+}
+.settings-screen-dialog .currency-list .currency-list-item:nth-child(even) {
+    background-color: #00000020;
+}
+.settings-screen-dialog .currency-list .currency-list-item .country-icon {
+    float: left;
+    clear: both;
+    margin-right: 1em;
+    margin-top: -0.2em;
+    width: 3em;
+}
+.settings-screen-dialog .currency-list .currency-list-item .country-name {
+    font-weight: 800;
+}
+.settings-screen-dialog .currency-list .currency-list-item .currency-name {
+    font-style: italic;
+    font-size: 0.90em;
+}

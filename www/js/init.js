@@ -47,9 +47,34 @@ class App {
         const localStorage = window.localStorage;
         return localStorage.getItem("destinationAddress");
     }
+
+    static setCountry(value) {
+        const localStorage = window.localStorage;
+        return localStorage.setItem("country", value);
+    }
+
+    static getCountry() {
+        const localStorage = window.localStorage;
+        return localStorage.getItem("country");
+    }
+
+    static getCountryData(countryIso) {
+        for (let i = 0; i < App.countries.length; i += 1) {
+            const country = App.countries[i];
+            if (country.iso == countryIso) {
+                return country;
+            }
+        }
+        return null;
+    }
 }
 
 window.setTimeout(function() {
+    App.countries = [];
+    Http.get("/api/v1/countries.json", "", function(data) {
+        App.countries = data;
+    });
+
     const main = document.getElementById("main");
     
     const pin = App.getPin();
