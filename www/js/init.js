@@ -80,12 +80,34 @@ class App {
         const localStorage = window.localStorage;
         return localStorage.setItem("multiTerminalIsEnabled", (isEnabled ? true : false));
     }
+
+    static isAddressValid(addressString) {
+        const isValidResult = function(result) {
+            return (result && typeof result != "string");
+        };
+
+        let result = window.libauth.decodeBase58Address(App.sha256, addressString);
+        if (isValidResult(result)) { return true; }
+
+        result = window.libauth.decodeCashAddressFormat(addressString);
+        if (isValidResult(result)) { return true; }
+
+        result = window.libauth.decodeCashAddressFormat("bitcoincash:" + addressString);
+        if (isValidResult(result)) { return true; }
+
+        return false;
+    }
 }
 
 window.setTimeout(function() {
     App.countries = [];
     Http.get("/api/v1/countries.json", "", function(data) {
         App.countries = data;
+    });
+
+    App.sha256 = null;
+    window.setTimeout(async function() {
+        App.sha256 = await window.libauth.instantiateSha256();
     });
 
     const main = document.getElementById("main");

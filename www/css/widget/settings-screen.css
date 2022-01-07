@@ -117,3 +117,11 @@
     font-style: italic;
     font-size: 0.90em;
 }
+
+.settings-screen-dialog.edit-destination-address .dialog-input {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin-top: 3em;
+    padding: 0.375em;
+    border-radius: 0.375em;
+}

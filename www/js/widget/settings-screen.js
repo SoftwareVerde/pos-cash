@@ -139,6 +139,11 @@ class SettingsScreen {
             const dialogTemplate = SettingsScreen.editDestinationAddressDialogTemplate;
             const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, value);
             dialogWidget.onComplete = function(value) {
+                const isValid = App.isAddressValid(value);
+                if (! isValid) {
+                    return;
+                }
+
                 destinationAddressSetting.setValue(value);
                 destinationAddressSetting.setDisplayValue(value || "...");
                 App.setDestinationAddress(value);
