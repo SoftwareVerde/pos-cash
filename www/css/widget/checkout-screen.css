@@ -1,0 +1,32 @@
+.checkout-screen .checkout-content {
+    text-align: center;
+}
+
+.checkout-screen .checkout-content .checkout-amount {
+    font-size: 4em;
+    display: block;
+    margin: auto;
+    background: none;
+    color: #FFFFFF;
+    border: 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.checkout-screen .checkout-content .checkout-label {
+    text-align: center;
+}
+
+.checkout-screen .checkout-content .checkout-button {
+    display: inline-block;
+    margin: auto;
+    margin-top: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
+    line-height: 2em;
+    font-size: 2em;
+    background-color: #58C48E;
+    border-radius: 1em;
+    color: #202020;
+}

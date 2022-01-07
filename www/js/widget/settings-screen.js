@@ -107,6 +107,14 @@ class SettingsScreen {
             subWidgetContainer.appendChild(subWidget);
         };
 
+        // Back Button
+        const navigationContainer = widget.querySelector(".navigation-container");
+        navigationContainer.onclick = function() {
+            clearDialog();
+            const checkoutScreen = CheckoutScreen.create();
+            App.setScreen(checkoutScreen);
+        };
+
         // Merchant Name Setting Widget
         const merchantName = App.getMerchantName();
         const merchantNameSetting = Setting.create("Merchant Name", "/img/merchant.png", merchantName);

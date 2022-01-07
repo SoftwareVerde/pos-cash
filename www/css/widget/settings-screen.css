@@ -8,6 +8,17 @@
     margin-bottom: 2em;
 }
 
+.settings-screen .navigation-container {
+    cursor: pointer;
+    display: inline-block;
+    padding-right: 2em;
+}
+.settings-screen .navigation-container .settings-back-icon {
+    display: inline-block;
+    padding: 1em;
+    line-height: 2em;
+}
+
 .settings-screen-dialog {
     position: fixed;
     top: calc(50vh - 25vh);

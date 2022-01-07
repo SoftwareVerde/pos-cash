@@ -28,6 +28,9 @@
         <link rel="stylesheet" href="/css/widget/checkout-screen.css" />
         <script src="/js/widget/checkout-screen.js"></script>
 
+        <link rel="stylesheet" href="/css/widget/menu.css" />
+        <script src="/js/widget/menu.js"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>BCH Merchant POS</title>
@@ -56,6 +59,7 @@
                 <div class="setting-value"></div>
             </div>
             <div class="settings-screen">
+                <div class="navigation-container"><span class="settings-back-icon">&#8592;</span>Settings</div>
                 <div class="active-widget"></div>
             </div>
             <div class="settings-screen-dialog edit-merchant edit-destination-address">
@@ -87,7 +91,28 @@
                     <div class="button enable confirm">Enable</div>
                 </div>
             </div>
-            <div class="checkout-screen">Checkout</div>
+            <div class="checkout-screen">
+                <div class="menu-container"></div>
+                <div class="checkout-content">
+                    <div class="checkout-amount">$0</div>
+                    <div class="checkout-label">Enter an amount.</div>
+                    <div class="checkout-button">Checkout</div>
+                </div>
+            </div>
+            <div class="menu">
+                <div class="menu-content">
+                    <div class="menu-header">
+                        <img class="menu-merchant-icon" src="/img/merchant.png" />
+                        <div class="menu-merchant-name"></div>
+                    </div>
+                    <div class="menu-list"></div>
+                </div>
+                <img class="menu-icon" src="/img/menu.png" />
+            </div>
+            <div class="menu-list-item">
+                <img class="menu-item-icon" />
+                <div class="menu-item-label"></div>
+            </div>
         </div>
 
         <div id="attribution">

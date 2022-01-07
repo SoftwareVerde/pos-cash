@@ -1,0 +1,67 @@
+.menu.expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: #00000090;
+}
+
+.menu .hidden {
+    display: none;
+}
+
+.menu .menu-icon {
+    width: 3em;
+    background-color: #EAEAEA;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+.menu .menu-content {
+    width: 40vw;
+    height: 100vh;
+    padding: 1em;
+    background-color: #202020;
+    overflow-y: scroll;
+}
+
+.menu .menu-content .menu-header {
+    background-color: #58C38E;
+    padding: 1em;
+}
+
+.menu .menu-content .menu-header .menu-merchant-name {
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.menu .menu-content .menu-header .menu-merchant-icon {
+    width: 15%;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+    padding: 3%;
+}
+
+.menu .menu-content .menu-list .menu-list-item {
+    clear: both;
+    margin: 1em;
+    margin-bottom: 2em;
+    cursor: pointer;
+}
+.menu .menu-content .menu-list .menu-list-item .menu-item-icon {
+    width: 4em;
+    display: inline-block;
+    margin-right: 2em;
+    margin-left: 1em;
+    float: left;
+}
+.menu .menu-content .menu-list .menu-list-item .menu-item-label {
+    display: inline-block;
+    line-height: 2em;
+    font-size: 2em;
+}
