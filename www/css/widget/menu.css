@@ -1,5 +1,5 @@
 .menu.expanded {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -14,13 +14,13 @@
 
 .menu .menu-icon {
     width: 3em;
-    background-color: #EAEAEA;
     border-radius: 0.5em;
     cursor: pointer;
+    margin-left: 1em;
 }
 
 .menu .menu-content {
-    width: 40vw;
+    width: 35vw;
     height: 100vh;
     padding: 1em;
     background-color: #202020;
@@ -64,4 +64,13 @@
     display: inline-block;
     line-height: 2em;
     font-size: 2em;
+}
+
+@media (max-width: 600px) {
+    .menu .menu-content {
+        width: 85vw;
+    }
+    .menu .menu-content .menu-list .menu-list-item {
+        margin-left: 0;
+    }
 }

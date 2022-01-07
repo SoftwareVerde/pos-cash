@@ -33,7 +33,11 @@ class App {
     static setScreen(screen) {
         const main = document.getElementById("main");
         while (main.firstChild) {
-            main.removeChild(main.firstChild);
+            const widget = main.firstChild;
+            if (typeof widget.unload == "function") {
+                widget.unload();
+            }
+            main.removeChild(widget);
         }
 
         if (screen) {

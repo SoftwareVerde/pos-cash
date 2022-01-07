@@ -20,17 +20,28 @@
 }
 
 .settings-screen-dialog {
-    position: fixed;
+    position: absolute;
     top: calc(50vh - 25vh);
     left: calc(50vw - 15vw);
     width: 30vw;
     height: 20em;
-    background: #101010CC;
-    background: linear-gradient(23deg, #000000, #00000050);
+    background: #101010;
+    background: linear-gradient(23deg, #000000, #000000C0);
     padding: 1em;
     border-radius: 0.5em;
     border: solid 2px #000000;
 }
+
+@media (max-width: 600px) {
+    .settings-screen-dialog {
+        top: 25vh;
+        left: 5vw;
+        right: 5vw;
+        width: auto;
+        height: 50vh;
+    }
+}
+
 
 .settings-screen-dialog .dialog-label {
     text-align: center;
@@ -84,10 +95,12 @@
 .settings-screen-dialog .buttons .button.confirm {
     color: #202020;
     background-color: #58C38E;
+    border-color: #6EF4B2;
 }
 .settings-screen-dialog .buttons .button.destroy {
     color: #202020;
     background-color: #C45858;
+    border-color: #6EF4B2;
 }
 .settings-screen-dialog .buttons .button.cancel {
     background-color: #CCCCCC;

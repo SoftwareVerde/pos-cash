@@ -12,6 +12,21 @@ class CheckoutScreen {
 
         const amountElement = widget.querySelector(".checkout-amount");
 
+        // Create a hidden-input for mobile keyboard...
+        const inputDiv = document.createElement("div");
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "number";
+        inputDiv.appendChild(hiddenInput);
+        inputDiv.classList.add("hidden-input");
+        hiddenInput.onkeyup = function(event) {
+            widget.setAmount(hiddenInput.value);
+        };
+        widget.appendChild(inputDiv);
+        amountElement.onclick = function() {
+            hiddenInput.click();
+            hiddenInput.focus();
+        };
+
         const getDecimalCount = function(amount) {
             const decimalSeparator = Util.getDecimalSeparator();
             const amountString = amount;
@@ -93,6 +108,11 @@ class CheckoutScreen {
 
                 widget.setAmount(amountString + digit);
             }
+        };
+
+        widget.unload = function() {
+            window.onkeypress = null;
+            window.onkeydown = null;
         };
 
         return widget;

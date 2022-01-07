@@ -118,6 +118,7 @@ class SettingsScreen {
         // Merchant Name Setting Widget
         const merchantName = App.getMerchantName();
         const merchantNameSetting = Setting.create("Merchant Name", "/img/merchant.png", merchantName);
+        merchantNameSetting.setValue(merchantName);
         merchantNameSetting.onClick = function() {
             const label = merchantNameSetting.getLabel();
             const value = merchantNameSetting.getValue();
@@ -138,8 +139,9 @@ class SettingsScreen {
         widget.addWidget(merchantNameSetting);
 
         // Destination Address Setting Widget
-        const destinationAddress = App.getDestinationAddress() || "...";
-        const destinationAddressSetting = Setting.create("Destination Address", "/img/address.png", destinationAddress);
+        const destinationAddress = App.getDestinationAddress();
+        const destinationAddressSetting = Setting.create("Destination Address", "/img/address.png", destinationAddress || "...");
+        destinationAddressSetting.setValue(destinationAddress);
         destinationAddressSetting.onClick = function() {
             const label = destinationAddressSetting.getLabel();
             const value = destinationAddressSetting.getValue();
@@ -147,7 +149,7 @@ class SettingsScreen {
             const dialogTemplate = SettingsScreen.editDestinationAddressDialogTemplate;
             const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, value);
             dialogWidget.onComplete = function(value) {
-                const isValid = App.isAddressValid(value);
+                const isValid = ( (value.length == 0) || App.isAddressValid(value) );
                 if (! isValid) {
                     return;
                 }

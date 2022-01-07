@@ -30,3 +30,16 @@
     border-radius: 1em;
     color: #202020;
 }
+
+.hidden-input {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+}
+
+.menu-container {
+    min-height: 3.5em;
+}
