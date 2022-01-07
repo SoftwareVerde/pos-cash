@@ -32,12 +32,13 @@
 }
 
 .hidden-input {
-    position: absolute;
+    position: relative;
     bottom: 0;
     right: 0;
     overflow: hidden;
     height: 1px;
     width: 1px;
+    opacity: 0;
 }
 
 .menu-container {

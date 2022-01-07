@@ -20,6 +20,13 @@ class Util {
         const decimalSeparator = Util.getDecimalSeparator();
         return (decimalSeparator == "." ? "," : ".");
     }
+
+    static isMobile() {
+        const matchers = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
+        return matchers.some(function(item) {
+            return navigator.userAgent.match(item);
+        });
+    }
 }
 
 Util.KeyCodes = {};
@@ -131,5 +138,35 @@ class App {
         if (isValidResult(result)) { return true; }
 
         return false;
+    }
+
+    static updateExchangeRate() {
+        Http.get("https://markets.api.bitcoin.com/rates", {"c": "BCH"}, function(data) {
+            if ( (! data) || (data.length == 0) ) { return; }
+
+            App.exchangeRateData = data;
+            App.exchangeRateAge = Date.now();
+        });
+    }
+
+    static getExchangeRate() {
+        if (! App.exchangeRateData) { return null; }
+
+        const countryIso = App.getCountry();
+        const country = App.getCountryData(countryIso);
+        const currency = country.currency;
+
+        for (let i = 0; i < App.exchangeRateData.length; i += 1) {
+            const exchangeData = App.exchangeRateData[i];
+            if (exchangeData.code == currency) {
+                return exchangeData.rate;
+            }
+        }
+
+        return null;
+    }
+
+    static getExchangeRateAge() {
+        return App.exchangeRateAge;
     }
 }

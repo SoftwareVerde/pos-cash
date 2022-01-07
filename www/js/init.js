@@ -31,4 +31,9 @@ window.setTimeout(function() {
         const checkoutScreen = CheckoutScreen.create();
         App.setScreen(checkoutScreen);
     }
+
+    App.updateExchangeRate();
+    App.updateExchangeRate.timeout = window.setInterval(function() {
+        App.updateExchangeRate();
+    }, (2 * 60 * 1000));
 }, 0);
