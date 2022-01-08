@@ -5,10 +5,11 @@
         <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
         <link href="//fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
 
-        <link rel="icon" href="/img/favicon.png" />
+        <link rel="icon" type="image/png" href="/img/favicon.png">
 
         <script src="/js/http.js"></script>
         <script src="/js/libauth.js"></script>
+        <script src="/js/qr-code.js"></script>
 
         <link rel="stylesheet" href="/css/core.css" />
         <script src="/js/core.js"></script>
@@ -27,6 +28,12 @@
 
         <link rel="stylesheet" href="/css/widget/checkout-screen.css" />
         <script src="/js/widget/checkout-screen.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/payment-screen.css" />
+        <script src="/js/widget/payment-screen.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/payment-received-screen.css" />
+        <script src="/js/widget/payment-received-screen.js"></script>
 
         <link rel="stylesheet" href="/css/widget/menu.css" />
         <script src="/js/widget/menu.js"></script>
@@ -100,6 +107,20 @@
                     <div class="checkout-button">Checkout</div>
                 </div>
             </div>
+            <div class="payment-screen">
+                <img class="cancel-button" src="/img/cancel.png" />
+                <div class="payment-content">
+                    <div class="payment-amount">$0</div>
+                    <div class="payment-amount-bch">0 BCH</div>
+                    <div class="payment-label">Scan to Pay</div>
+                    <div class="qr-code"></div>
+                </div>
+            </div>
+            <div class="payment-received-screen">
+                <div class="success-icon">&#10003;</div>
+                <div class="success-label">Payment complete. Thank you.</div>
+                <div class="done-button">Done</div>
+            </div>
             <div class="menu">
                 <div class="menu-content">
                     <div class="menu-header">
@@ -116,7 +137,7 @@
             </div>
         </div>
 
-        <div id="attribution">
+        <div id="attribution" class="hidden">
             <div>Icons made by <a href="//www.flaticon.com/authors/pikselan" title="Pikselan">Pikselan</a> from <a href="//www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
 

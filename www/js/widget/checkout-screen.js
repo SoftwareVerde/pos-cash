@@ -11,6 +11,15 @@ class CheckoutScreen {
         widget.menu = menuWidget;
 
         const amountElement = widget.querySelector(".checkout-amount");
+        const bchAmountElement = widget.querySelector(".checkout-amount-bch");
+        const checkoutButton = widget.querySelector(".checkout-button");
+
+        checkoutButton.onclick = function() {
+            if (widget.amount <= 0) { return; }
+
+            const paymentScreen = PaymentScreen.create(widget.amount);
+            App.setScreen(paymentScreen);
+        };
 
         // Create a hidden-input for mobile keyboard...
         if (Util.isMobile()) {
@@ -38,17 +47,6 @@ class CheckoutScreen {
             widget.hiddenTimeout = null;
         }
 
-        const getDecimalCount = function(amount) {
-            const decimalSeparator = Util.getDecimalSeparator();
-            const amountString = amount;
-            const decimalIndex = amountString.indexOf(decimalSeparator);
-            if (decimalIndex < 0) { return 0; }
-
-            return (amountString.length - decimalIndex - 1);
-        };
-
-        const bchAmountElement = widget.querySelector(".checkout-amount-bch");
-
         widget.amount = "0";
         widget.setAmount = function(amount) {
             const isInvalid = window.isNaN(window.parseFloat(amount));
@@ -69,7 +67,7 @@ class CheckoutScreen {
             const country = App.getCountryData(countryIso);
 
             const decimalIndex = stringAmount.indexOf(decimalSeparator);
-            const decimalCount = window.Math.min(getDecimalCount(stringAmount), country.decimals);
+            const decimalCount = window.Math.min(Util.getDecimalCount(stringAmount), country.decimals);
 
             if (decimalIndex >= 0) {
                 stringAmount = stringAmount.substring(0, decimalIndex + decimalCount + 1);

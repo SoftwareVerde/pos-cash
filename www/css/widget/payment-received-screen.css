@@ -1,0 +1,42 @@
+.payment-received-screen {
+    background-color: #09C58A;
+    padding-top: 3em;
+    height: 90vh;
+    text-align: center;
+}
+
+.payment-received-screen .success-icon {
+    font-size: 3em;
+    padding: 0.5em;
+    border-radius: 50%;
+    color: #09C58A;
+    background-color: #EAEAEA;
+    margin-top: 3em;
+    margin-bottom: 0.5em;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.payment-received-screen .success-label {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: #EAEAEA;
+    margin-bottom: 3em;
+}
+
+.payment-received-screen .done-button {
+    background-color: #EAEAEA;
+    padding: 1em;
+    padding-left: 9em;
+    padding-right: 9em;
+    border-radius: 0.5em;
+    color: #09C58A;
+    font-weight: bold;
+    font-size: 1.5em;
+    display: inline-block;
+    margin-top: 3em;
+    cursor: pointer;
+}
+

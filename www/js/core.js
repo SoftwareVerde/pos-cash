@@ -21,11 +21,24 @@ class Util {
         return (decimalSeparator == "." ? "," : ".");
     }
 
+    static getDecimalCount(amount) {
+        const decimalSeparator = Util.getDecimalSeparator();
+        const amountString = amount;
+        const decimalIndex = amountString.indexOf(decimalSeparator);
+        if (decimalIndex < 0) { return 0; }
+
+        return (amountString.length - decimalIndex - 1);
+    };
+
     static isMobile() {
         const matchers = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
         return matchers.some(function(item) {
             return navigator.userAgent.match(item);
         });
+    }
+
+    static createQrCode(content) {
+        return window.ninja.qrCode.createCanvas(content, 4);
     }
 }
 
@@ -123,50 +136,202 @@ class App {
         return localStorage.setItem("multiTerminalIsEnabled", (isEnabled ? true : false));
     }
 
-    static isAddressValid(addressString) {
+    static _decodeAddress(addressString) {
         const isValidResult = function(result) {
             return (result && typeof result != "string");
         };
 
         let result = window.libauth.decodeBase58Address(App.sha256, addressString);
-        if (isValidResult(result)) { return true; }
+        if (isValidResult(result)) { return result; }
 
         result = window.libauth.decodeCashAddressFormat(addressString);
-        if (isValidResult(result)) { return true; }
+        if (isValidResult(result)) { return result; }
 
         result = window.libauth.decodeCashAddressFormat("bitcoincash:" + addressString);
-        if (isValidResult(result)) { return true; }
+        if (isValidResult(result)) { return result; }
 
-        return false;
+        return null;
+    }
+
+    static isAddressValid(addressString) {
+        const address = App._decodeAddress(addressString);
+        return (address != null);
+    }
+
+    static convertToBase58Address(addressString) {
+        const address = App._decodeAddress(addressString);
+        if (address == null) { return null; }
+
+        const addressBytes = (address.payload || address.hash);
+        return window.libauth.encodeBase58Address(App.sha256, address.version, addressBytes);
+    }
+
+    static convertToCashAddress(addressString) {
+        const address = App._decodeAddress(addressString);
+        if (address == null) { return null; }
+
+        const addressBytes = (address.payload || address.hash);
+        return window.libauth.encodeCashAddress("bitcoincash", address.version, addressBytes);
     }
 
     static updateExchangeRate() {
         Http.get("https://markets.api.bitcoin.com/rates", {"c": "BCH"}, function(data) {
             if ( (! data) || (data.length == 0) ) { return; }
 
-            App.exchangeRateData = data;
-            App.exchangeRateAge = Date.now();
+            const rates = {};
+            for (let i = 0; i < data.length; i += 1) {
+                const exchangeData = data[i];
+                rates[exchangeData.code] = exchangeData.rate;
+            }
+
+            rates.timestamp = Math.floor(Date.now() / 1000);
+            App._exchangeRateData["bitcoin.com"] = rates;
         });
+
+        Http.get("https://api.coinbase.com/v2/exchange-rates", {"currency": "BCH"}, function(result) {
+            if ( (! result) || (! result.data) ) { return; }
+
+            const rates = result.data.rates;
+            rates.timestamp = Math.floor(Date.now() / 1000);
+            App._exchangeRateData["coinbase.com"] = rates;
+        });
+        
     }
 
     static getExchangeRate() {
-        if (! App.exchangeRateData) { return null; }
+        if (! App._exchangeRateData) { return null; }
 
         const countryIso = App.getCountry();
         const country = App.getCountryData(countryIso);
         const currency = country.currency;
 
-        for (let i = 0; i < App.exchangeRateData.length; i += 1) {
-            const exchangeData = App.exchangeRateData[i];
-            if (exchangeData.code == currency) {
-                return exchangeData.rate;
+        let chosenKey = null;
+        let timestamp = 0;
+        let rate = null;
+
+        for (let key in App._exchangeRateData) {
+            const data = App._exchangeRateData[key];
+            if (data.timestamp >= timestamp) {
+                if (data[currency]) {
+                    rate = data[currency];
+                    timestamp = data.timestamp;
+                    chosenKey = key;
+                }
             }
         }
 
-        return null;
+        return rate;
     }
 
     static getExchangeRateAge() {
         return App.exchangeRateAge;
     }
+
+    static listenForTransactions() {
+        const endpoint = "wss://explorer.bitcoinverde.org/api/v1/announcements";
+        const webSocket = new WebSocket(endpoint);
+
+        webSocket.onopen = function() {
+            const message = {
+                requestId: 1,
+                method: "POST",
+                query: "SET_ADDRESSES",
+                parameters: []
+            };
+            const destinationAddress = App.getDestinationAddress();
+            message.parameters.push(destinationAddress);
+
+            webSocket.send(message);
+        };
+
+        webSocket.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+            const objectType = message.objectType;
+
+            let container = null;
+            let element  = null;
+            if ( (objectType == "TRANSACTION") || (objectType == "TRANSACTION_HASH") ) {
+                const transaction = message.object;
+                const transactionHash = transaction.hash;
+
+                Http.get("https://explorer.bitcoinverde.org/api/v1/transactions/" + transactionHash, { }, function(data) {
+                    if (! data.wasSuccess) { return; }
+
+                    const destinationAddress = App.getDestinationAddress();
+                    const address = App.convertToBase58Address(destinationAddress);
+                    const transaction = data.transaction;
+                    for (let i = 0; i < transaction.outputs.length; i += 1) {
+                        const output = transaction.outputs[i];
+                        const amount = output.amount;
+
+                        if (output.address == address) {
+                            App.onPaymentReceived(amount);
+                        }
+                    }
+                });
+            }
+
+            return false;
+        };
+
+        webSocket.onclose = function() {
+            console.log("WebSocket closed...");
+        };
+
+        if (App._webSocket) {
+            App._webSocket.close();
+        }
+        App._webSocket = webSocket;
+    }
+
+    static stopListeningForTransactions() {
+        const webSocket = App._webSocket;
+        if (webSocket) {
+            webSocket.close();
+
+            App._webSocket = null;
+        }
+    }
+
+    static waitForPayment(amount) {
+        App._pendingPaymentAmount = (window.parseInt(amount) || null);
+    }
+
+    static onPaymentReceived(amount) {
+        console.log("Payment Received: " + amount);
+        if (App._pendingPaymentAmount == null) { return; }
+
+        amount = (window.parseInt(amount) || 0);
+        const totalAmountReceived = ((App._receivedAmount || 0) + amount);
+        App._receivedAmount = totalAmountReceived;
+
+        if (totalAmountReceived >= App._pendingPaymentAmount) {
+            console.log("Payment completed.");
+
+            // Reset the pending payment information.
+            App._pendingPaymentAmount = null;
+            App._receivedAmount = 0;
+
+            // Display payment-received screen.
+            window.setTimeout(function() {
+                const paymentReceivedScreen = PaymentReceivedScreen.create();
+                App.setScreen(paymentReceivedScreen);
+            }, 0);
+        }
+    }
+
+    static showAttributions(isEnabled) {
+        const attributionDiv = document.getElementById("attribution");
+        if (isEnabled) {
+            attributionDiv.classList.remove("hidden");
+        }
+        else {
+            attributionDiv.classList.add("hidden");
+        }
+    }
 }
+
+App._exchangeRateData = {};
+App._webSocket = null;
+App._receivedAmount = 0;
+App._pendingPaymentAmount = null;

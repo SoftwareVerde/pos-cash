@@ -267,8 +267,6 @@ class SettingsScreen {
         pinSetting.onClick = function() {
             clearDialog();
 
-            widget.remove();
-
             window.onkeyup = function(event) {
                 event = event || window.event;
 
@@ -327,6 +325,12 @@ class SettingsScreen {
             widget.appendChild(dialogWidget);
         };
         widget.addWidget(multiTerminalSetting);
+
+        App.showAttributions(true);
+
+        widget.unload = function() {
+            App.showAttributions(false);
+        };
 
         return widget;
     }

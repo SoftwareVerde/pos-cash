@@ -26,12 +26,13 @@
     padding-right: 2em;
     line-height: 2em;
     font-size: 2em;
-    background-color: #58C48E;
+    background-color: #09C58A;
     border-radius: 1em;
     color: #202020;
+    cursor: pointer;
 }
 
-.hidden-input {
+.checkout-screen .hidden-input {
     position: relative;
     bottom: 0;
     right: 0;
@@ -41,6 +42,6 @@
     opacity: 0;
 }
 
-.menu-container {
+.checkout-screen .menu-container {
     min-height: 3.5em;
 }

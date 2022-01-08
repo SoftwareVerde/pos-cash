@@ -59,6 +59,8 @@ class Menu {
             menuIcon.classList.add("hidden");
 
             widget.isHidden = false;
+
+            App.showAttributions(true);
         };
 
         widget.close = function() {
@@ -67,6 +69,8 @@ class Menu {
             menuIcon.classList.remove("hidden");
 
             widget.isHidden = true;
+
+            App.showAttributions(false);
         };
 
         widget.close();

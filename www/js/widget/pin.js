@@ -104,6 +104,6 @@ class PinWidget {
 }
 
 window.setTimeout(function() {
-    const templates = document.getElementById("templates");;
+    const templates = document.getElementById("templates");
     PinWidget.template = templates.querySelector(".pin");
 }, 0);

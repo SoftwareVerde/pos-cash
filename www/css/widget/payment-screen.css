@@ -1,0 +1,42 @@
+.payment-screen .payment-content {
+    text-align: center;
+}
+
+.payment-screen .payment-content .payment-amount {
+    font-size: 4em;
+    display: block;
+    margin: auto;
+    background: none;
+    color: #FFFFFF;
+    border: 0;
+    margin-top: 0.75em;
+    margin-bottom: 0.25em;
+    text-align: center;
+}
+
+.payment-screen .payment-content .payment-label {
+    text-align: center;
+    font-weight: bold;
+    color: #09C58A;
+    font-size: 1.25em;
+    margin-top: 0.5em;
+}
+
+.payment-screen .payment-content .qr-code {
+    display: inline-block;
+    margin: auto;
+    margin-top: 3em;
+    padding: 2em;
+    background-color: #EAEAEA;
+    border-radius: 1em;
+    color: #202020;
+    box-sizing: border-box;
+    min-height: 164px;
+    min-width: 164px;
+}
+
+.payment-screen .cancel-button {
+    display: inline;
+    width: 2em;
+    cursor: pointer;
+}

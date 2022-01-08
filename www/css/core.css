@@ -1,5 +1,4 @@
 html, body {
-    height: 100vh;
     background-color: #202020;
     color: #AAAAAA;
 }
@@ -12,13 +11,11 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-html, body, #main {
-    min-height: 100vw;
-}
+html, body, #main { }
 
 a, a:active, a:visited {
     text-decoration: none;
-    color: #58C38E;
+    color: #09C58A;
 }
 
 #templates {
@@ -31,6 +28,10 @@ a, a:active, a:visited {
     text-align: center;
     font-size: 0.75em;
     color: #757575;
+}
+
+#attribution.hidden {
+    display: none;
 }
 
 @media (max-width: 600px) {
