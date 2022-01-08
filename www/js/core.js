@@ -37,6 +37,10 @@ class Util {
         });
     }
 
+    static toSatoshis(amount) {
+        return (amount * 100000000);
+    }
+
     static createQrCode(content) {
         return window.ninja.qrCode.createCanvas(content, 4);
     }
@@ -88,7 +92,7 @@ class App {
         const localStorage = window.localStorage;
 
         const merchantName = localStorage.getItem("merchantName");
-        if (merchantName == null) { return "..."; }
+        if (merchantName == null) { return ""; }
 
         return merchantName;
     }
@@ -265,7 +269,7 @@ class App {
                         const amount = output.amount;
 
                         if (output.address == address) {
-                            App.onPaymentReceived(amount);
+                            App.onPaymentReceived(transactionHash, amount);
                         }
                     }
                 });
@@ -293,24 +297,69 @@ class App {
         }
     }
 
-    static waitForPayment(amount) {
-        App._pendingPaymentAmount = (window.parseInt(amount) || null);
+    static waitForPayment(amount, fiatAmount) {
+        amount = (window.parseInt(amount) || null);
+        if (! amount) {
+            App._pendingPayment = null;
+            return;
+        }
+
+        const pendingPayment = {
+            amount: amount,
+            fiatAmount: fiatAmount,
+
+            receivedAmount: 0,
+            transactions: [],
+            timeCompleted: null
+        };
+        App._pendingPayment = pendingPayment;
     }
 
-    static onPaymentReceived(amount) {
-        console.log("Payment Received: " + amount);
-        if (App._pendingPaymentAmount == null) { return; }
+    static getCompletedPayments() {
+        const localStorage = window.localStorage;
+        return JSON.parse(localStorage.getItem("payments")) || [];
+    }
 
-        amount = (window.parseInt(amount) || 0);
-        const totalAmountReceived = ((App._receivedAmount || 0) + amount);
-        App._receivedAmount = totalAmountReceived;
+    static addCompletedPayment(completedPayment) {
+        const completedPayments = App.getCompletedPayments();
+        completedPayments.push(completedPayment);
 
-        if (totalAmountReceived >= App._pendingPaymentAmount) {
+        const localStorage = window.localStorage;
+        localStorage.setItem("payments", JSON.stringify(completedPayments));
+    }
+
+    static _isUniquePayment(transactionHash) {
+        const completedPayments = App.getCompletedPayments();
+        for (let i = 0; i < completedPayments.length; i += 1) {
+            const completedPayment = completedPayments[i];
+            if (completedPayment.transactions.indexOf(transactionHash) >= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static onPaymentReceived(transactionHash, bchAmount) {
+        if (! App._isUniquePayment(transactionHash)) { return; }
+
+        console.log("Payment Received: " + bchAmount);
+
+        const pendingPayment = App._pendingPayment;
+        if (pendingPayment == null) { return; }
+
+        bchAmount = (window.parseInt(bchAmount) || 0);
+        pendingPayment.receivedAmount += bchAmount;
+        pendingPayment.transactions.push(transactionHash);
+
+        if (pendingPayment.receivedAmount >= pendingPayment.amount) {
             console.log("Payment completed.");
+            pendingPayment.timeCompleted = (Date.now() / 1000);
+
+            // Store the completed payment.
+            App.addCompletedPayment(pendingPayment);
 
             // Reset the pending payment information.
-            App._pendingPaymentAmount = null;
-            App._receivedAmount = 0;
+            App._pendingPayment = null;
 
             // Display payment-received screen.
             window.setTimeout(function() {
@@ -333,5 +382,4 @@ class App {
 
 App._exchangeRateData = {};
 App._webSocket = null;
-App._receivedAmount = 0;
-App._pendingPaymentAmount = null;
+App._pendingPayment = null;

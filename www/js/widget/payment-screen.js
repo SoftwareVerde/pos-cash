@@ -1,12 +1,12 @@
 class PaymentScreen {
-    static create(amount) {
+    static create(fiatAmountString) {
         const template = PaymentScreen.template;
         const widget = template.cloneNode(true);
 
         const countryIso = App.getCountry();
         const country = App.getCountryData(countryIso);
 
-        const amountElement = widget.querySelector(".payment-amount");
+        const fiatAmountElement = widget.querySelector(".payment-amount");
         const bchAmountElement = widget.querySelector(".payment-amount-bch");
         const qrCodeElement = widget.querySelector(".qr-code");
         const cancelButton = widget.querySelector(".cancel-button");
@@ -14,25 +14,24 @@ class PaymentScreen {
         const destinationAddress = App.getDestinationAddress();
         const cashAddress = App.convertToCashAddress(destinationAddress);
 
-        const stringAmount = "" + amount;
-        const decimalCount = window.Math.min(Util.getDecimalCount(stringAmount), country.decimals);
+        const fiatAmount = window.parseFloat(fiatAmountString);
+        widget.fiatAmount = fiatAmountString;
+
+        const decimalCount = window.Math.min(Util.getDecimalCount(fiatAmountString), country.decimals);
         const formatOptions = { maximumFractionDigits: country.decimals, minimumFractionDigits: decimalCount };
-        const displayString = window.parseFloat(stringAmount).toLocaleString(undefined, formatOptions);
+        const displayString = fiatAmount.toLocaleString(undefined, formatOptions);
 
-        amountElement.textContent = "$" + displayString;
+        fiatAmountElement.textContent = "$" + displayString;
 
-        widget.amount = amount;
-
-        const amountFloat = window.parseFloat(widget.amount);
         const exchangeRate = App.getExchangeRate();
-        const amountBch = (amountFloat / exchangeRate);
+        const bchAmount = (fiatAmount / exchangeRate);
         const bchFormatOptions = { maximumFractionDigits: 8, minimumFractionDigits: 8 };
-        const bchDisplayString = amountBch.toLocaleString(undefined, bchFormatOptions);
+        const bchDisplayString = bchAmount.toLocaleString(undefined, bchFormatOptions);
         bchAmountElement.textContent = bchDisplayString + " BCH";
 
         const merchantName = App.getMerchantName();
         const paymentLabel = window.encodeURIComponent(merchantName);
-        const qrCode = Util.createQrCode(cashAddress + "?amount=" + amountBch + "&label=" + paymentLabel);
+        const qrCode = Util.createQrCode(cashAddress + "?amount=" + bchAmount + "&label=" + paymentLabel);
         qrCodeElement.appendChild(qrCode);
 
         cancelButton.onclick = function() {
@@ -40,7 +39,8 @@ class PaymentScreen {
             App.setScreen(checkoutScreen);
         };
 
-        App.waitForPayment(amount);
+        const satoshiAmount = Util.toSatoshis(bchAmount);
+        App.waitForPayment(satoshiAmount, fiatAmount);
         App.listenForTransactions();
 
         widget.unload = function() {

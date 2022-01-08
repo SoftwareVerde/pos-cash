@@ -117,7 +117,7 @@ class SettingsScreen {
 
         // Merchant Name Setting Widget
         const merchantName = App.getMerchantName();
-        const merchantNameSetting = Setting.create("Merchant Name", "/img/merchant.png", merchantName);
+        const merchantNameSetting = Setting.create("Merchant Name", "/img/merchant.png", merchantName || "...");
         merchantNameSetting.setValue(merchantName);
         merchantNameSetting.onClick = function() {
             const label = merchantNameSetting.getLabel();
