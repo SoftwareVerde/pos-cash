@@ -49,7 +49,7 @@ class Setting {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     Setting.template = templates.querySelector(".setting");
-}, 0);
+});

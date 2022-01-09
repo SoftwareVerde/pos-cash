@@ -19,8 +19,8 @@ class PaymentReceivedScreen {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     PaymentReceivedScreen.template = templates.querySelector(".payment-received-screen");
-}, 0);
+});
 

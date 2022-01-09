@@ -35,6 +35,9 @@
         <link rel="stylesheet" href="/css/widget/payment-received-screen.css" />
         <script src="/js/widget/payment-received-screen.js"></script>
 
+        <link rel="stylesheet" href="/css/widget/transactions-screen.css" />
+        <script src="/js/widget/transactions-screen.js"></script>
+
         <link rel="stylesheet" href="/css/widget/menu.css" />
         <script src="/js/widget/menu.js"></script>
 
@@ -89,13 +92,12 @@
                 <div class="country-name"></div>
                 <div class="currency-name"></div>
             </div>
-            <div class="settings-screen-dialog edit-multi-terminal">
+            <div class="settings-screen-dialog reset-data">
                 <div class="dialog-label"></div>
                 <div class="text"></div>
                 <div class="buttons">
                     <div class="button cancel left">Cancel</div>
-                    <div class="button disable destroy">Disable</div>
-                    <div class="button enable confirm">Enable</div>
+                    <div class="button enable confirm">Reset</div>
                 </div>
             </div>
             <div class="checkout-screen">
@@ -121,6 +123,15 @@
                 <div class="success-label">Payment complete. Thank you.</div>
                 <div class="done-button">Done</div>
             </div>
+            <div class="transactions-screen">
+                <div class="navigation-container"><span class="transactions-back-icon">&#8592;</span>Transactions</div>
+                <div class="completed-payments-list"></div>
+            </div>
+            <div class="completed-payment-item">
+                <div class="amount-fiat"></div>
+                <div class="amount-bch"></div>
+                <div class="timestamp"></div>
+            </div>
             <div class="menu">
                 <div class="menu-content">
                     <div class="menu-header">
@@ -141,6 +152,6 @@
             <div>Icons made by <a href="//www.flaticon.com/authors/pikselan" title="Pikselan">Pikselan</a> from <a href="//www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
 
-        <script src="/js/init.js"></script>
+        <script src="/js/init.js" defer></script>
     </body>
 </html>

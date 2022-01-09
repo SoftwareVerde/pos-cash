@@ -1,39 +1,8 @@
 window.setTimeout(function() {
-    App.countries = [];
-    Http.get("/api/v1/countries.json", "", function(data) {
-        App.countries = data;
-    });
+    const startMs = Date.now();
+    App.onLoad();
+    const endMs = Date.now();
 
-    App.sha256 = null;
-    window.setTimeout(async function() {
-        App.sha256 = await window.libauth.instantiateSha256();
-    });
-
-    const main = document.getElementById("main");
-    
-    const pin = App.getPin();
-    if (pin.length == 0) {
-        const pinScreen = PinScreen.create();
-        pinScreen.onComplete = function(value) {
-            App.setPin(value);
-
-            const settingsScreen = SettingsScreen.create();
-            App.setScreen(settingsScreen);
-        };
-
-        App.setScreen(pinScreen);
-
-        window.setTimeout(function() {
-            pinScreen.focus();
-        });
-    }
-    else {
-        const checkoutScreen = CheckoutScreen.create();
-        App.setScreen(checkoutScreen);
-    }
-
-    App.updateExchangeRate();
-    App.updateExchangeRate.timeout = window.setInterval(function() {
-        App.updateExchangeRate();
-    }, (2 * 60 * 1000));
+    const elapsedMs = (endMs - startMs);
+    console.log("Initialized in " + elapsedMs + "ms.");
 }, 0);

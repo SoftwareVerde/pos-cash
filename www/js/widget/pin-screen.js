@@ -66,7 +66,7 @@ class PinScreen {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     PinScreen.template = templates.querySelector(".pin-screen");
-}, 0);
+});

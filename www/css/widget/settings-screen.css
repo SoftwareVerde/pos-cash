@@ -32,17 +32,6 @@
     border: solid 2px #000000;
 }
 
-@media (max-width: 600px) {
-    .settings-screen-dialog {
-        top: 25vh;
-        left: 5vw;
-        right: 5vw;
-        width: auto;
-        height: 50vh;
-    }
-}
-
-
 .settings-screen-dialog .dialog-label {
     text-align: center;
     margin-bottom: 1em;
@@ -148,4 +137,14 @@
     margin-top: 3em;
     padding: 0.375em;
     border-radius: 0.375em;
+}
+
+@media (max-width: 600px) {
+    .settings-screen-dialog {
+        top: 25vh;
+        left: 5vw;
+        right: 5vw;
+        width: auto;
+        height: 50vh;
+    }
 }

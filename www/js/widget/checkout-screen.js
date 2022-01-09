@@ -137,7 +137,7 @@ class CheckoutScreen {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     CheckoutScreen.template = templates.querySelector(".checkout-screen");
-}, 0);
+});

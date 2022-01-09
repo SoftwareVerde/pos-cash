@@ -52,7 +52,7 @@ class PaymentScreen {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     PaymentScreen.template = templates.querySelector(".payment-screen");
-}, 0);
+});

@@ -1,6 +1,14 @@
 window.MAX_SAFE_INTEGER = window.Number.MAX_SAFE_INTEGER || 9007199254740991;
 
 class Util {
+    static KeyCodes = {
+        escape: 27,
+        delete: 8,
+        tab:    9,
+        enter:  13,
+        shift:  16
+    };
+
     static cancelEvent(event) {
         if (! event.preventDefault) {
             event.returnValue = false;
@@ -46,14 +54,62 @@ class Util {
     }
 }
 
-Util.KeyCodes = {};
-Util.KeyCodes.escape = 27;
-Util.KeyCodes.delete = 8;
-Util.KeyCodes.tab = 9;
-Util.KeyCodes.enter = 13;
-Util.KeyCodes.shift = 16;
-
 class App {
+    static _onLoad = [];
+    static _hasLoaded = false;
+    static _exchangeRateData = {};
+    static _webSocket = null;
+    static _pendingPayment = null;
+    static _countries = [];
+    static _sha256 = null;
+
+    static _decodeAddress(addressString) {
+        const isValidResult = function(result) {
+            return (result && typeof result != "string");
+        };
+
+        let result = window.libauth.decodeBase58Address(App._sha256, addressString);
+        if (isValidResult(result)) { return result; }
+
+        result = window.libauth.decodeCashAddressFormat(addressString);
+        if (isValidResult(result)) { return result; }
+
+        result = window.libauth.decodeCashAddressFormat("bitcoincash:" + addressString);
+        if (isValidResult(result)) { return result; }
+
+        return null;
+    }
+
+    static _isUniquePayment(transactionHash) {
+        const completedPayments = App.getCompletedPayments();
+        for (let i = 0; i < completedPayments.length; i += 1) {
+            const completedPayment = completedPayments[i];
+            if (completedPayment.transactions.indexOf(transactionHash) >= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static addOnLoad(callback) {
+        if (App._hasLoaded) {
+            window.setTimeout(callback, 0);
+            return;
+        }
+
+        App._onLoad.push(callback);
+    }
+
+    static onLoad() {
+        if (App._hasLoaded) { return; }
+        App._hasLoaded = true;
+
+        for (let i = 0; i < App._onLoad.length; i += 1) {
+            const callback = App._onLoad[i];
+            callback();
+        }
+    }
+
     static setScreen(screen) {
         const main = document.getElementById("main");
         while (main.firstChild) {
@@ -118,8 +174,8 @@ class App {
     }
 
     static getCountryData(countryIso) {
-        for (let i = 0; i < App.countries.length; i += 1) {
-            const country = App.countries[i];
+        for (let i = 0; i < App._countries.length; i += 1) {
+            const country = App._countries[i];
             if (country.iso == countryIso) {
                 return country;
             }
@@ -140,23 +196,6 @@ class App {
         return localStorage.setItem("multiTerminalIsEnabled", (isEnabled ? true : false));
     }
 
-    static _decodeAddress(addressString) {
-        const isValidResult = function(result) {
-            return (result && typeof result != "string");
-        };
-
-        let result = window.libauth.decodeBase58Address(App.sha256, addressString);
-        if (isValidResult(result)) { return result; }
-
-        result = window.libauth.decodeCashAddressFormat(addressString);
-        if (isValidResult(result)) { return result; }
-
-        result = window.libauth.decodeCashAddressFormat("bitcoincash:" + addressString);
-        if (isValidResult(result)) { return result; }
-
-        return null;
-    }
-
     static isAddressValid(addressString) {
         const address = App._decodeAddress(addressString);
         return (address != null);
@@ -167,7 +206,7 @@ class App {
         if (address == null) { return null; }
 
         const addressBytes = (address.payload || address.hash);
-        return window.libauth.encodeBase58Address(App.sha256, address.version, addressBytes);
+        return window.libauth.encodeBase58Address(App._sha256, address.version, addressBytes);
     }
 
     static convertToCashAddress(addressString) {
@@ -328,17 +367,6 @@ class App {
         localStorage.setItem("payments", JSON.stringify(completedPayments));
     }
 
-    static _isUniquePayment(transactionHash) {
-        const completedPayments = App.getCompletedPayments();
-        for (let i = 0; i < completedPayments.length; i += 1) {
-            const completedPayment = completedPayments[i];
-            if (completedPayment.transactions.indexOf(transactionHash) >= 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     static onPaymentReceived(transactionHash, bchAmount) {
         if (! App._isUniquePayment(transactionHash)) { return; }
 
@@ -378,8 +406,50 @@ class App {
             attributionDiv.classList.add("hidden");
         }
     }
+
+    static main() {
+        const main = document.getElementById("main");
+        
+        const pin = App.getPin();
+        if (pin.length == 0) {
+            const pinScreen = PinScreen.create();
+            pinScreen.onComplete = function(value) {
+                App.setPin(value);
+
+                const settingsScreen = SettingsScreen.create();
+                App.setScreen(settingsScreen);
+            };
+
+            App.setScreen(pinScreen);
+
+            window.setTimeout(function() {
+                pinScreen.focus();
+            }, 0);
+        }
+        else {
+            const checkoutScreen = CheckoutScreen.create();
+            App.setScreen(checkoutScreen);
+        }
+    }
 }
 
-App._exchangeRateData = {};
-App._webSocket = null;
-App._pendingPayment = null;
+App.addOnLoad(function() {
+    Http.get("/api/v1/countries.json", { }, function(data) {
+        App._countries = data;
+    });
+
+    window.setTimeout(async function() {
+        App._sha256 = await window.libauth.instantiateSha256();
+    }, 0);
+
+    App.updateExchangeRate();
+    App.updateExchangeRate.timeout = window.setInterval(function() {
+        App.updateExchangeRate();
+    }, (2 * 60 * 1000));
+});
+
+App.addOnLoad(function() {
+    window.setTimeout(function() {
+        App.main();
+    }, 0);
+});

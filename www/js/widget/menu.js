@@ -26,8 +26,15 @@ class Menu {
         merchantName.textContent = App.getMerchantName();
 
         const menuList = widget.querySelector(".menu-list");
-        menuList.appendChild(Menu.createMenuItem("Transactions", "/img/transactions.png", null));
+        menuList.appendChild(Menu.createMenuItem("Transactions", "/img/transactions.png", function() {
+            widget.close();
+
+            const transactionsScreen = TransactionsScreen.create();
+            App.setScreen(transactionsScreen);
+        }));
         menuList.appendChild(Menu.createMenuItem("Settings", "/img/settings.png", function() {
+            widget.close();
+
             const settingsScreen = SettingsScreen.create();
             App.setScreen(settingsScreen);
         }));
@@ -79,9 +86,8 @@ class Menu {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     Menu.template = templates.querySelector(".menu");
     Menu.itemTemplate = templates.querySelector(".menu-list-item");
-}, 0);
-
+});

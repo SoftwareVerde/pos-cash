@@ -1,0 +1,30 @@
+
+.transactions-screen .navigation-container {
+    cursor: pointer;
+    display: inline-block;
+    padding-right: 2em;
+}
+.transactions-screen .navigation-container .transactions-back-icon {
+    display: inline-block;
+    padding: 1em;
+    line-height: 2em;
+}
+
+.transactions-screen .completed-payments-list {
+    border-radius: 1em;
+    background-color: #303030;
+    padding: 1em;
+}
+
+.transactions-screen .completed-payments-list .completed-payment-item {
+    
+}
+
+.transactions-screen .completed-payment-item .amount-fiat {
+}
+
+.transactions-screen .completed-payment-item .amount-bch {
+}
+
+.transactions-screen .completed-payment-item .timestamp {
+}

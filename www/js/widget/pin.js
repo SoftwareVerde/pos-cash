@@ -103,7 +103,7 @@ class PinWidget {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     PinWidget.template = templates.querySelector(".pin");
-}, 0);
+});

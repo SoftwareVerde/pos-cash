@@ -296,27 +296,28 @@ class SettingsScreen {
         };
         widget.addWidget(pinSetting);
 
-        // Multi-terminal Setting Widget
-        const multiTerminalIsEnabled = App.isMultiTerminalEnabled();
-        const multiTerminalSetting = Setting.create("Multi-terminal", "/img/terminal.png", (multiTerminalIsEnabled ? "Enabled" : "Disabled"));
-        multiTerminalSetting.onClick = function() {
-            const label = multiTerminalSetting.getLabel();
-
-            const dialogTemplate = SettingsScreen.editMultiTerminalDialogTemplate;
-            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, multiTerminalIsEnabled, "For merchants using the same address across multiple terminals.");
+        // Reset Settings Widget
+        const resetSetting = Setting.create("Reset Data", "/img/trash.png", "Clear all app data.");
+        resetSetting.onClick = function() {
+            const dialogTemplate = SettingsScreen.editResetDialogTemplate;
+            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, "Reset Data", null, "Reset/clear all settings.");
             dialogWidget.onComplete = function() {
-                multiTerminalSetting.setValue(true);
-                multiTerminalSetting.setDisplayValue("Enabled");
-                App.setMultiTerminalIsEnabled(true);
-            };
+                window.localStorage.clear();
 
-            const disableButton = dialogWidget.querySelector(".disable");
-            disableButton.onclick = function() {
-                multiTerminalSetting.setValue(false);
-                multiTerminalSetting.setDisplayValue("Disabled");
-                App.setMultiTerminalIsEnabled(false);
+                const pinScreen = PinScreen.create();
+                pinScreen.onComplete = function(value) {
+                    window.onkeyup = null; // Unset the escape handler.
 
-                clearDialog();
+                    App.setPin(value);
+
+                    const settingsScreen = SettingsScreen.create();
+                    App.setScreen(settingsScreen);
+                };
+                App.setScreen(pinScreen);
+
+                window.setTimeout(function() {
+                    pinScreen.focus();
+                });
             };
 
             closeDialogOnEscape(dialogWidget);
@@ -324,7 +325,7 @@ class SettingsScreen {
             clearDialog();
             widget.appendChild(dialogWidget);
         };
-        widget.addWidget(multiTerminalSetting);
+        widget.addWidget(resetSetting);
 
         App.showAttributions(true);
 
@@ -336,12 +337,12 @@ class SettingsScreen {
     }
 }
 
-window.setTimeout(function() {
+App.addOnLoad(function() {
     const templates = document.getElementById("templates");
     SettingsScreen.template = templates.querySelector(".settings-screen");
     SettingsScreen.editMerchantDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-merchant");
     SettingsScreen.editDestinationAddressDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-destination-address");
     SettingsScreen.editLocalCurrencyDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-local-currency");
     SettingsScreen.currencyListItemTemplate = templates.querySelector(".currency-list-item");
-    SettingsScreen.editMultiTerminalDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-multi-terminal");
-}, 0);
+    SettingsScreen.editResetDialogTemplate = templates.querySelector(".settings-screen-dialog.reset-data");
+});
