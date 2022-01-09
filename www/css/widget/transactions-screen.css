@@ -14,17 +14,40 @@
     border-radius: 1em;
     background-color: #303030;
     padding: 1em;
+
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .transactions-screen .completed-payments-list .completed-payment-item {
-    
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
 }
-
+.transactions-screen .completed-payments-list .completed-payment-item:nth-child(even) {
+    background-color: #FFFFFF10;
+}
+.transactions-screen .completed-payments-list .completed-payment-item .item-left {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+}
+.transactions-screen .completed-payments-list .completed-payment-item .item-right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: right;
+}
 .transactions-screen .completed-payment-item .amount-fiat {
 }
-
 .transactions-screen .completed-payment-item .amount-bch {
+    font-size: 0.5em;
 }
-
 .transactions-screen .completed-payment-item .timestamp {
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: right;
+    justify-content: center;
+    display: flex;
 }

@@ -9,15 +9,18 @@ class CheckoutScreen {
         menuWidget.close();
 
         widget.menu = menuWidget;
+        widget.getFiatAmount = function() {
+            return window.parseFloat(widget._fiatAmountString);
+        };
 
         const amountElement = widget.querySelector(".checkout-amount");
         const bchAmountElement = widget.querySelector(".checkout-amount-bch");
         const checkoutButton = widget.querySelector(".checkout-button");
 
         checkoutButton.onclick = function() {
-            if (widget.amount <= 0) { return; }
+            if (widget._fiatAmountString <= 0) { return; }
 
-            const paymentScreen = PaymentScreen.create(widget.amount);
+            const paymentScreen = PaymentScreen.create(widget._fiatAmountString);
             App.setScreen(paymentScreen);
         };
 
@@ -34,11 +37,11 @@ class CheckoutScreen {
                 event.stopPropagation();
 
                 widget.setAmount(hiddenInput.value);
-                hiddenInput.value = widget.amount;
+                hiddenInput.value = widget._fiatAmountString;
             };
             amountElement.parentNode.insertBefore(inputDiv, amountElement);
             amountElement.onclick = function() {
-                widget.hiddenInput.value = widget.amount;
+                widget.hiddenInput.value = widget._fiatAmountString;
                 hiddenInput.click();
                 hiddenInput.focus();
             };
@@ -47,56 +50,21 @@ class CheckoutScreen {
             widget.hiddenTimeout = null;
         }
 
-        widget.amount = "0";
-        widget.setAmount = function(amount) {
-            const isInvalid = window.isNaN(window.parseFloat(amount));
-            if (isInvalid) { return; }
+        widget._fiatAmountString = "0";
+        widget.setAmount = function(fiatAmountString) {
+            const displayAmounts = App.formatFiatAmount(fiatAmountString);
+            if (displayAmounts == null) { return; }
 
-            let stringAmount = "" + amount;
+            widget._fiatAmountString = displayAmounts.fiatValue;
 
-            // Prevent Javascript integer/float overflow...
-            const maxValue = 4294967296;
-            if (window.parseFloat(stringAmount) > maxValue) {
-                stringAmount = "" + widget.amount;
-            }
-
-            const decimalSeparator = Util.getDecimalSeparator();
-            const thousandsSeparator = Util.getThousandsSeparator();
-
-            const countryIso = App.getCountry();
-            const country = App.getCountryData(countryIso);
-
-            const decimalIndex = stringAmount.indexOf(decimalSeparator);
-            const decimalCount = window.Math.min(Util.getDecimalCount(stringAmount), country.decimals);
-
-            if (decimalIndex >= 0) {
-                stringAmount = stringAmount.substring(0, decimalIndex + decimalCount + 1);
-            }
-
-            const formatOptions = { maximumFractionDigits: country.decimals, minimumFractionDigits: decimalCount };
-            let displayString = window.parseFloat(stringAmount).toLocaleString(undefined, formatOptions);
-
-            const displayStringDecimalIndex = displayString.indexOf(decimalSeparator);
-            if (displayStringDecimalIndex < 0 && decimalIndex >= 0) {
-                displayString += decimalSeparator;
-            }
-
-            amountElement.textContent = "$" + displayString;
-
-            widget.amount = stringAmount;
-
-            const amountFloat = window.parseFloat(widget.amount);
-            const exchangeRate = App.getExchangeRate();
-            const amountBch = (amountFloat / exchangeRate);
-            const bchFormatOptions = { maximumFractionDigits: 8, minimumFractionDigits: 8 };
-            const bchDisplayString = amountBch.toLocaleString(undefined, bchFormatOptions);
-            bchAmountElement.textContent = bchDisplayString + " BCH";
+            amountElement.textContent = "$" + displayAmounts.fiat;
+            bchAmountElement.textContent = displayAmounts.bch + " BCH";
         };
 
         window.onkeydown = function(event) {
             event = event || window.event;
 
-            let amountString = widget.amount;
+            let amountString = widget._fiatAmountString;
             if (event.keyCode == Util.KeyCodes.delete) {
                 if (amountString.length <= 1) {
                     amountString = "0";
@@ -112,7 +80,7 @@ class CheckoutScreen {
             event = event || window.event;
 
             const key = event.key;
-            const amountString = widget.amount;
+            const amountString = widget._fiatAmountString;
 
             const decimalSeparator = Util.getDecimalSeparator();
             if (key == decimalSeparator) {

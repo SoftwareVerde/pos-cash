@@ -46,7 +46,13 @@ class Util {
     }
 
     static toSatoshis(amount) {
-        return (amount * 100000000);
+        amount = window.parseFloat(amount);
+        return window.Math.round(amount * 100000000); // Round (not floor/ceil) is necessary due to floating point arithmetic.
+    }
+
+    static fromSatoshis(amount) {
+        amount = window.parseInt(amount);
+        return (amount / 100000000);
     }
 
     static createQrCode(content) {
@@ -381,7 +387,7 @@ class App {
 
         if (pendingPayment.receivedAmount >= pendingPayment.amount) {
             console.log("Payment completed.");
-            pendingPayment.timeCompleted = (Date.now() / 1000);
+            pendingPayment.timeCompleted = window.Math.floor(Date.now() / 1000);
 
             // Store the completed payment.
             App.addCompletedPayment(pendingPayment);
@@ -405,6 +411,60 @@ class App {
         else {
             attributionDiv.classList.add("hidden");
         }
+    }
+
+    static formatFiatAmount(fiatAmountString, bchAmountString) {
+        fiatAmountString = ("" + fiatAmountString); // Guarantee string.
+
+        const isInvalid = window.isNaN(window.parseFloat(fiatAmountString));
+        if (isInvalid) { return null; }
+
+        // Prevent Javascript integer/float overflow...
+        const maxValue = 4294967296;
+        if (window.parseFloat(fiatAmountString) > maxValue) { return null; }
+
+        const decimalSeparator = Util.getDecimalSeparator();
+        const thousandsSeparator = Util.getThousandsSeparator();
+
+        const countryIso = App.getCountry();
+        const country = App.getCountryData(countryIso);
+
+        const fiatDecimalIndex = fiatAmountString.indexOf(decimalSeparator);
+        const fiatDecimalCount = window.Math.min(Util.getDecimalCount(fiatAmountString), country.decimals);
+
+        if (fiatDecimalIndex >= 0) {
+            fiatAmountString = fiatAmountString.substring(0, fiatDecimalIndex + fiatDecimalCount + 1);
+        }
+
+        const formatOptions = { maximumFractionDigits: country.decimals, minimumFractionDigits: fiatDecimalCount };
+        let fiatDisplayString = window.parseFloat(fiatAmountString).toLocaleString(undefined, formatOptions);
+
+        const fiatDisplayStringDecimalIndex = fiatDisplayString.indexOf(decimalSeparator);
+        if (fiatDisplayStringDecimalIndex < 0 && fiatDecimalIndex >= 0) {
+            fiatDisplayString += decimalSeparator;
+        }
+
+        let bchAmountFloat = null;
+        if (! bchAmountString) {
+            const fiatAmountFloat = window.parseFloat(fiatAmountString);
+            const exchangeRate = App.getExchangeRate();
+            bchAmountFloat = (fiatAmountFloat / exchangeRate);
+        }
+        else {
+            bchAmountFloat = window.parseFloat(bchAmountString);
+        }
+
+        const bchFormatOptions = { maximumFractionDigits: 8, minimumFractionDigits: 8 };
+        const bchDisplayString = bchAmountFloat.toLocaleString(undefined, bchFormatOptions);
+        const bchValue = bchAmountFloat.toFixed(8);
+
+        return {
+            fiatValue: fiatAmountString,
+            bchValue: bchValue,
+
+            fiat: fiatDisplayString,
+            bch: bchDisplayString
+        };
     }
 
     static main() {
