@@ -341,10 +341,12 @@ class App {
     static listenForTransactionsViaBitcoinVerdeDotOrg() {
         const endpoint = "wss://explorer.bitcoinverde.org/api/v1/announcements";
         const webSocket = new WebSocket(endpoint);
+        webSocket._isSubscribed = false;
 
+        const subscribeRequestId = 1;
         webSocket.onopen = function() {
             const message = {
-                requestId: 1,
+                requestId: subscribeRequestId,
                 method: "POST",
                 query: "SET_ADDRESSES",
                 parameters: []
@@ -357,9 +359,18 @@ class App {
 
         webSocket.onmessage = function(event) {
             const message = JSON.parse(event.data);
-            const objectType = message.objectType;
+            const requestId = message.requestId;
+            if (requestId == subscribeRequestId) {
+                if (message.wasSuccess) {
+                    webSocket._isSubscribed = true;
+                }
+            }
 
+            const objectType = message.objectType;
             if ( (objectType == "TRANSACTION") || (objectType == "TRANSACTION_HASH") ) {
+                console.log(webSocket._isSubscribed);
+                if (! webSocket._isSubscribed) { return; } // Prevent downloading transactions before the filter is set.
+
                 const transaction = message.object;
                 const transactionHash = transaction.hash;
 
