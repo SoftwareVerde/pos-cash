@@ -262,6 +262,14 @@ class App {
         return window.libauth.encodeCashAddress("bitcoincash", address.version, addressBytes);
     }
 
+    static hash(value) {
+        const sha256 = App._sha256;
+        const encoder = new window.TextEncoder();
+        const data = encoder.encode("" + value);
+        const hash = sha256.hash(data);
+        return window.libauth.binToBase58(hash);
+    }
+
     static updateExchangeRate() {
         Http.get("https://markets.api.bitcoin.com/rates", {"c": "BCH"}, function(data) {
             if ( (! data) || (data.length == 0) ) { return; }

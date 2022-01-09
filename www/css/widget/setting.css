@@ -18,3 +18,11 @@
     font-weight: 800;
     color: #CCCCCC;
 }
+
+
+@media (max-width: 600px) {
+    .setting .setting-value {
+        overflow-x: scroll;
+        font-size: 0.75em;
+    }
+}

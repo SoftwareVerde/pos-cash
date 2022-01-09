@@ -1,5 +1,6 @@
 .pin {
     box-sizing: border-box;
+    text-align: center;
 }
 
 .pin .pin-input input {

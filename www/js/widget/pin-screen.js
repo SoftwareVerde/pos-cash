@@ -8,7 +8,8 @@ class PinScreen {
         const confirmPinWidget = PinWidget.create();
         confirmPinWidget.setLabel("Confirm PIN Code");
         confirmPinWidget.onComplete = function(value) {
-            const expectedValue = pinWidget.getValue();
+            const firstValue = pinWidget.getValue();
+            const expectedValue = App.hash(firstValue);
             if (expectedValue !== value) {
                 pinWidget.clear();
                 confirmPinWidget.clear();

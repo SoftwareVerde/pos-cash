@@ -56,7 +56,8 @@ class PinWidget {
                     if (typeof callback == "function") {
                         const value = widget.getValue();
                         window.setTimeout(function() {
-                            callback(value);
+                            const hash = App.hash(value);
+                            callback(hash);
                         });
                     }
                 }

@@ -35,8 +35,25 @@ class Menu {
         menuList.appendChild(Menu.createMenuItem("Settings", "/img/settings.png", function() {
             widget.close();
 
-            const settingsScreen = SettingsScreen.create();
-            App.setScreen(settingsScreen);
+            const pinWidget = PinWidget.create();
+            pinWidget.onComplete = function(pin) {
+                if (App.getPin() != pin) {
+                    App.displayToast("Incorrect PIN Code.", true);
+
+                    const checkoutScreen = CheckoutScreen.create();
+                    App.setScreen(checkoutScreen);
+                    return;
+                }
+
+                const settingsScreen = SettingsScreen.create();
+                App.setScreen(settingsScreen);
+            };
+            pinWidget.setLabel("Enter PIN Code");
+            App.setScreen(pinWidget);
+
+            window.setTimeout(function() {
+                pinWidget.focus();
+            }, 0);
         }));
 
         const contentElement = widget.querySelector(".menu-content");
