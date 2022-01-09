@@ -98,7 +98,7 @@ class App {
     static _onLoad = [];
     static _hasLoaded = false;
     static _exchangeRateData = {};
-    static _webSocket = null;
+    static _webSockets = [];
     static _pendingPayment = null;
     static _countries = [];
     static _sha256 = null;
@@ -324,6 +324,21 @@ class App {
     }
 
     static listenForTransactions() {
+        App.stopListeningForTransactions();
+
+        let webSocket = null;
+
+        webSocket = App.listenForTransactionsViaBitcoinVerdeDotOrg();
+        App._webSockets.push(webSocket);
+
+        webSocket = App.listenForTransactionsViaBitcoinDotCom();
+        App._webSockets.push(webSocket);
+
+        webSocket = App.listenForTransactionsViaBlockchainDotInfo();
+        App._webSockets.push(webSocket);
+    }
+
+    static listenForTransactionsViaBitcoinVerdeDotOrg() {
         const endpoint = "wss://explorer.bitcoinverde.org/api/v1/announcements";
         const webSocket = new WebSocket(endpoint);
 
@@ -337,15 +352,13 @@ class App {
             const destinationAddress = App.getDestinationAddress();
             message.parameters.push(destinationAddress);
 
-            webSocket.send(message);
+            webSocket.send(JSON.stringify(message));
         };
 
         webSocket.onmessage = function(event) {
             const message = JSON.parse(event.data);
             const objectType = message.objectType;
 
-            let container = null;
-            let element  = null;
             if ( (objectType == "TRANSACTION") || (objectType == "TRANSACTION_HASH") ) {
                 const transaction = message.object;
                 const transactionHash = transaction.hash;
@@ -366,27 +379,102 @@ class App {
                     }
                 });
             }
-
-            return false;
         };
 
         webSocket.onclose = function() {
-            console.log("WebSocket closed...");
+            console.log("WebSocket closed.");
         };
 
-        if (App._webSocket) {
-            App._webSocket.close();
-        }
-        App._webSocket = webSocket;
+        return webSocket;
+    }
+
+    static listenForTransactionsViaBlockchainDotInfo() {
+        const endpoint = "wss://ws.blockchain.info/bch/inv";
+        const webSocket = new WebSocket(endpoint);
+
+        webSocket.onopen = function() {
+            const message = {
+                op: "addr_sub",
+                addr: null
+            };
+
+            const destinationAddress = App.getDestinationAddress();
+            message.addr = destinationAddress;
+
+            webSocket.send(JSON.stringify(message));
+        };
+
+        webSocket.onmessage = function(event) {
+            const message = JSON.parse(event.data);
+
+            const destinationAddress = App.getDestinationAddress();
+            const address = App.convertToCashAddress(destinationAddress);
+            const transaction = message.x;
+            const transactionHash = transaction.hash.toUpperCase();
+            for (let i = 0; i < transaction.out.length; i += 1) {
+                const output = transaction.out[i];
+                const amount = output.value;
+
+                if (output.addr == address) {
+                    App.onPaymentReceived(transactionHash, amount);
+                }
+            }
+        };
+
+        webSocket.onclose = function() {
+            console.log("WebSocket closed.");
+        };
+
+        return webSocket;
+    }
+
+    static listenForTransactionsViaBitcoinDotCom() {
+        const endpoint = "wss://bch.api.wallet.bitcoin.com/bws/api/socket/v1/address";
+        const webSocket = new WebSocket(endpoint);
+
+        webSocket.onopen = function() {
+            const message = {
+                op: "addr_sub",
+                addr: null
+            };
+
+            const destinationAddress = App.getDestinationAddress();
+            const address = App.convertToBase58Address(destinationAddress);
+            message.addr = address;
+
+            webSocket.send(JSON.stringify(message));
+        };
+
+        webSocket.onmessage = function(event) {
+            const transaction = JSON.parse(event.data);
+
+            const destinationAddress = App.getDestinationAddress();
+            const address = App.convertToBase58Address(destinationAddress);
+            const transactionHash = transaction.txid.toUpperCase();
+            for (let i = 0; i < transaction.outputs.length; i += 1) {
+                const output = transaction.outputs[i];
+                const amount = output.value;
+
+                if (output.address == address) {
+                    App.onPaymentReceived(transactionHash, amount);
+                }
+            }
+        };
+
+        webSocket.onclose = function() {
+            console.log("WebSocket closed.");
+        };
+
+        return webSocket;
     }
 
     static stopListeningForTransactions() {
-        const webSocket = App._webSocket;
-        if (webSocket) {
+        const webSockets = App._webSockets;
+        for (let i = 0; i < webSockets.length; i += 1) {
+            const webSocket = webSockets[i];
             webSocket.close();
-
-            App._webSocket = null;
         }
+        App._webSockets.length = 0;
     }
 
     static waitForPayment(amount, fiatAmount) {
