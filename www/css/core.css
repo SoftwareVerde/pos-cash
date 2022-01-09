@@ -34,6 +34,26 @@ a, a:active, a:visited {
     display: none;
 }
 
+#toast {
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0.5em;
+    text-align: center;
+    background-color: #09C58A;
+    color: #202020;
+}
+#toast.error {
+    background-color: #EB4949;
+}
+#toast.hidden {
+    display: none;
+}
+
 @media (max-width: 600px) {
     body {
         width: 100%;

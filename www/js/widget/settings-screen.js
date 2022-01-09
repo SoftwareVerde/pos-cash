@@ -195,8 +195,9 @@ class SettingsScreen {
             const currencyList = dialogWidget.querySelector(".currency-list");
             let selectedItem = null;
             const items = [];
-            for (let i = 0; i < App.countries.length; i += 1) {
-                const country = App.countries[i];
+            const countries = App.getCountries();
+            for (let i = 0; i < countries.length; i += 1) {
+                const country = countries[i];
 
                 const itemTemplate = SettingsScreen.currencyListItemTemplate;
                 const item = itemTemplate.cloneNode(true);

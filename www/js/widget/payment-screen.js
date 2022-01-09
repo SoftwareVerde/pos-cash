@@ -20,8 +20,14 @@ class PaymentScreen {
 
         const merchantName = App.getMerchantName();
         const paymentLabel = window.encodeURIComponent(merchantName);
-        const qrCode = Util.createQrCode(cashAddress + "?amount=" + displayAmounts.bchValue + "&label=" + paymentLabel);
+        const qrCodeContent = cashAddress + "?amount=" + displayAmounts.bchValue + "&label=" + paymentLabel;
+        const qrCode = Util.createQrCode(qrCodeContent);
         qrCodeElement.appendChild(qrCode);
+
+        qrCodeElement.onclick = function() {
+            Util.copyToClipboard(qrCodeContent);
+            App.displayToast("Text copied.", false, 1000);
+        };
 
         cancelButton.onclick = function() {
             const checkoutScreen = CheckoutScreen.create();
@@ -30,7 +36,6 @@ class PaymentScreen {
 
         const satoshiAmount = Util.toSatoshis(displayAmounts.bchValue);
         const fiatValue = window.parseFloat(displayAmounts.fiatValue);
-        console.log(displayAmounts.bchValue + " => " + satoshiAmount);
         App.waitForPayment(satoshiAmount, fiatValue);
         App.listenForTransactions();
 

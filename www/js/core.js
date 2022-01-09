@@ -58,6 +58,40 @@ class Util {
     static createQrCode(content) {
         return window.ninja.qrCode.createCanvas(content, 4);
     }
+
+    static copyToClipboard(text) {
+        const clipboard = (window.navigator ? window.navigator.clipboard : null);
+        if (clipboard) {
+            clipboard.writeText(text);
+            return;
+        }
+
+        const textArea = document.createElement("textarea");
+
+        textArea.style.position = "absolute";
+        textArea.style.bottom = 0;
+        textArea.style.right = 0;
+        textArea.style.width = "1px";
+        textArea.style.height = "1px";
+        textArea.style.padding = 0;
+        textArea.style.border = "none";
+        textArea.style.opacity = 0;
+
+        textArea.value = text;
+
+        const body = document.querySelector("body");
+        body.appendChild(textArea);
+
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand("copy");
+        }
+        catch (error) { }
+
+        body.removeChild(textArea);
+    }
 }
 
 class App {
@@ -68,6 +102,7 @@ class App {
     static _pendingPayment = null;
     static _countries = [];
     static _sha256 = null;
+    static _toastTimeout = null;
 
     static _decodeAddress(addressString) {
         const isValidResult = function(result) {
@@ -177,6 +212,10 @@ class App {
     static getCountry() {
         const localStorage = window.localStorage;
         return localStorage.getItem("country") || "US";
+    }
+
+    static getCountries() {
+        return App._countries;
     }
 
     static getCountryData(countryIso) {
@@ -465,6 +504,27 @@ class App {
             fiat: fiatDisplayString,
             bch: bchDisplayString
         };
+    }
+
+    static displayToast(text, isError, duration) {
+        duration = duration || 3000;
+
+        const toastElement = document.getElementById("toast");
+        toastElement.textContent = text;
+
+        if (isError) {
+            toast.classList.add("error");
+        }
+        else {
+            toast.classList.remove("error");
+        }
+
+        toast.classList.remove("hidden");
+
+        window.clearTimeout(App._toastTimeout);
+        App._toastTimeout = window.setTimeout(function() {
+            toast.classList.add("hidden");
+        }, duration);
     }
 
     static main() {
