@@ -40,3 +40,11 @@
     cursor: pointer;
 }
 
+@media (max-width: 600px) {
+    .payment-received-screen .done-button {
+        padding-left: 1em;
+        padding-right: 1em;
+        width: 90%;
+        box-sizing: border-box;
+    }
+}
