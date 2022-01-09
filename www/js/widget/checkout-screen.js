@@ -18,7 +18,16 @@ class CheckoutScreen {
         const checkoutButton = widget.querySelector(".checkout-button");
 
         checkoutButton.onclick = function() {
-            if (widget._fiatAmountString <= 0) { return; }
+            if (widget._fiatAmountString <= 0) {
+                App.displayToast("Invalid amount.", true);
+                return;
+            }
+
+            const destinationAddress = App.getDestinationAddress();
+            if (! destinationAddress) {
+                App.displayToast("Merchant address is not set.", true);
+                return;
+            }
 
             const paymentScreen = PaymentScreen.create(widget._fiatAmountString);
             App.setScreen(paymentScreen);

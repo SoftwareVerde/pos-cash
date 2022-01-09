@@ -19,11 +19,31 @@
     line-height: 2em;
 }
 
+.settings-screen .footer {
+    text-align: center;
+}
+
+.settings-screen .save-button {
+    display: inline-block;
+    margin: auto;
+    margin-top: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    line-height: 2em;
+    font-size: 2em;
+    background-color: #09C58A;
+    border-radius: 1em;
+    color: #202020;
+    cursor: pointer;
+}
+
 .settings-screen-dialog {
     position: absolute;
     top: calc(50vh - 25vh);
-    left: calc(50vw - 15vw);
-    width: 30vw;
+    left: calc(50vw - 25vw);
+    left: calc(50vw - min(25vw, 300px));
+    width: 50vw;
+    max-width: 600px;
     height: 20em;
     background: #101010;
     background: linear-gradient(23deg, #000000, #000000C0);

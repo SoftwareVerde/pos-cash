@@ -111,6 +111,16 @@ class SettingsScreen {
         const navigationContainer = widget.querySelector(".navigation-container");
         navigationContainer.onclick = function() {
             clearDialog();
+
+            const checkoutScreen = CheckoutScreen.create();
+            App.setScreen(checkoutScreen);
+        };
+
+        // Save Button (Helper-butter; all settings saved upon edit)
+        const saveButton = widget.querySelector(".save-button");
+        saveButton.onclick = function() {
+            clearDialog();
+
             const checkoutScreen = CheckoutScreen.create();
             App.setScreen(checkoutScreen);
         };
@@ -151,6 +161,7 @@ class SettingsScreen {
             dialogWidget.onComplete = function(value) {
                 const isValid = ( (value.length == 0) || App.isAddressValid(value) );
                 if (! isValid) {
+                    App.displayToast("Invalid address.", true);
                     return;
                 }
 
