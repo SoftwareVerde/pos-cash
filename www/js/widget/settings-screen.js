@@ -364,6 +364,13 @@ class SettingsScreen {
         };
         widget.addWidget(resetSetting);
 
+        // Map BitcoinDotCom Link
+        const mapLink = Setting.create("Advertise", "/img/business.png", "Add your business to map.bitcoin.com.");
+        mapLink.onClick = function() {
+            window.open("https://map.bitcoin.com/", "_blank").focus();
+        };
+        widget.addWidget(mapLink);
+
         App.showAttributions(true);
 
         widget.unload = function() {
