@@ -13,6 +13,23 @@ class CheckoutScreen {
             return window.parseFloat(widget._fiatAmountString);
         };
 
+        const keyboardContainer = widget.querySelector(".keyboard-container");
+        const keyboardWidget = Keyboard.create();
+        keyboardWidget.onButtonPressed = function(value) {
+            const event = Keyboard.createEvent(value);
+
+            if (window.onkeydown) {
+                window.onkeydown(event);
+            }
+            if (window.onkeyup) {
+                window.onkeyup(event);
+            }
+            if (window.onkeypress) {
+                window.onkeypress(event);
+            }
+        };
+        keyboardContainer.appendChild(keyboardWidget);
+
         const amountElement = widget.querySelector(".checkout-amount");
         const bchAmountElement = widget.querySelector(".checkout-amount-bch");
         const checkoutButton = widget.querySelector(".checkout-button");

@@ -45,3 +45,8 @@
 .checkout-screen .menu-container {
     min-height: 3.5em;
 }
+
+.checkout-screen .keyboard-container {
+    text-align: center;
+    margin-top: 3em;
+}

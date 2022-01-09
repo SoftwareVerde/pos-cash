@@ -1,0 +1,37 @@
+.keyboard,
+.keyboard .row,
+.keyboard .button {
+    box-sizing: border-box;
+}
+.keyboard {
+    display: inline-block;
+}
+.keyboard .row {
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+}
+.keyboard .button {
+    background: #444;
+    color: #eee;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 #222, inset 0 1px 3px rgba(255,255,255,0.1);
+    transition: 0.1s;
+    align-items: center;
+    align-content: center;
+    height: 57px;
+    border: 2px solid rgba(0,0,0,0.08);
+    cursor: pointer;
+
+    margin: 0.5em;
+    width: 3em;
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
+    user-select: none;
+}
+.keyboard .button:active {
+    transform: translateY(1px);
+    background: #333;
+    box-shadow: 0 1px 0 #000;
+}

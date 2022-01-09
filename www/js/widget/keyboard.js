@@ -1,0 +1,72 @@
+class Keyboard {
+    static createEvent(value) {
+        const event = {
+            key: null,
+            keyCode: null
+        };
+
+        if (value == "." || value >= 0) {
+            event.key = value;
+            event.keyCode = (48 + window.parseInt(value));
+        }
+        else if (value == "." || value >= 0) {
+            event.key = value;
+            event.keyCode = 190;
+        }
+        else {
+            event.key = null;
+            event.keyCode = Util.KeyCodes.delete;
+        }
+
+        return event;
+    }
+
+    static create(clickCallback) {
+        const template = Keyboard.template;
+        const widget = template.cloneNode(true);
+
+        widget.onButtonPressed = clickCallback;
+        widget.timeout = null;
+
+        const numberButtons = widget.querySelectorAll(".button.number");
+        for (let i = 0; i < numberButtons.length; i += 1) {
+            const button = numberButtons[i];
+
+            button.onclick = function(event) {
+                event = event || window.event;
+
+                const value = window.parseInt(button.innerText);
+                if (typeof widget.onButtonPressed == "function") {
+                    widget.onButtonPressed(value);
+                }
+            };
+        }
+
+        const decimalButton = widget.querySelector(".button.decimal");
+        decimalButton.onclick = function(event) {
+            event = event || window.event;
+
+            const value = ".";
+            if (typeof widget.onButtonPressed == "function") {
+                widget.onButtonPressed(value);
+            }
+        };
+
+        const deleteButton = widget.querySelector(".button.delete");
+        deleteButton.onclick = function(event) {
+            event = event || window.event;
+
+            const value = "-1";
+            if (typeof widget.onButtonPressed == "function") {
+                widget.onButtonPressed(value);
+            }
+        };
+
+        return widget;
+    }
+}
+
+App.addOnLoad(function() {
+    const templates = document.getElementById("templates");
+    Keyboard.template = templates.querySelector(".keyboard");
+});

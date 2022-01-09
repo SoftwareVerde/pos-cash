@@ -3,7 +3,18 @@ class PinScreen {
         const template = PinScreen.template;
         const widget = template.cloneNode(true);
 
+        const keyboardContainer = widget.querySelector(".keyboard-container");
+
         const pinWidget = PinWidget.create();
+        const keyboardWidget = Keyboard.create();
+
+        keyboardWidget.onButtonPressed = function(value) {
+            const pinWidget = widget.activeWidget;
+            if (pinWidget && pinWidget.onButtonPressed) {
+                pinWidget.onButtonPressed(value);
+            }
+        };
+        keyboardContainer.appendChild(keyboardWidget);
 
         const confirmPinWidget = PinWidget.create();
         confirmPinWidget.setLabel("Confirm PIN Code");

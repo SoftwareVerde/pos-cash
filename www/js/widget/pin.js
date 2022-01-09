@@ -1,9 +1,45 @@
 class PinWidget {
-    static create(onCompleteCallback) {
+    static create(onCompleteCallback, showKeyboard) {
         const template = PinWidget.template;
         const widget = template.cloneNode(true);
 
         const inputs = widget.querySelectorAll(".pin-input input");
+
+
+        const keyboardContainer = widget.querySelector(".keyboard-container");
+        if (showKeyboard) {
+            const keyboardWidget = Keyboard.create();
+
+            keyboardWidget.onButtonPressed = function(value) {
+                if (widget.onButtonPressed) {
+                    widget.onButtonPressed(value);
+                }
+            };
+            keyboardContainer.appendChild(keyboardWidget);
+        }
+        else {
+            keyboardContainer.remove();
+        }
+
+        widget.onButtonPressed = function(value) {
+            const event = Keyboard.createEvent(value);
+
+            let input = null;
+            for (let i = 0; i < inputs.length; i += 1) {
+                input = inputs[i];
+                if (input.value.length == 0) { break; }
+            }
+
+            if (input.onkeydown) {
+                input.onkeydown(event);
+            }
+            if (input.onkeyup) {
+                input.onkeyup(event);
+            }
+            if (input.onkeypress) {
+                input.onkeypress(event);
+            }
+        };
 
         const clearInputsAfter = function(index) {
             for (let i = (index + 1); i < inputs.length; i += 1) {

@@ -35,7 +35,7 @@ class Menu {
         menuList.appendChild(Menu.createMenuItem("Settings", "/img/settings.png", function() {
             widget.close();
 
-            const pinWidget = PinWidget.create();
+            const pinWidget = PinWidget.create(null, true);
             pinWidget.onComplete = function(pin) {
                 if (App.getPin() != pin) {
                     App.displayToast("Incorrect PIN Code.", true);

@@ -7,6 +7,8 @@
 
         <link rel="icon" type="image/png" href="/img/favicon.png">
 
+        <script>window.onerror = function (msg, url, lineNo, columnNo, error) { window.alert(msg + "\n" + url + ":" + lineNo); };</script>
+
         <script src="/js/http.js"></script>
         <script src="/js/libauth.js"></script>
         <script src="/js/qr-code.js"></script>
@@ -15,6 +17,9 @@
 
         <link rel="stylesheet" href="/css/core.css" />
         <script src="/js/core.js"></script>
+
+        <link rel="stylesheet" href="/css/widget/keyboard.css" />
+        <script src="/js/widget/keyboard.js"></script>
 
         <link rel="stylesheet" href="/css/widget/pin.css" />
         <script src="/js/widget/pin.js"></script>
@@ -60,9 +65,11 @@
                     <input type="password" pattern="[0-9]*" inputmode="numeric" maxlength="1" autocomplete="off" />
                 </div>
                 <div class="pin-label">Create PIN Code</div>
+                <div class="keyboard-container"></div>
             </div>
             <div class="pin-screen">
                 <div class="active-widget"></div>
+                <div class="keyboard-container"></div>
                 <div class="error-message hidden"></div>
             </div>
             <div class="setting">
@@ -113,6 +120,7 @@
                     <div class="checkout-amount">$0</div>
                     <div class="checkout-amount-bch">0 BCH</div>
                     <div class="checkout-label">Enter an amount.</div>
+                    <div class="keyboard-container"></div>
                     <div class="checkout-button">Checkout</div>
                 </div>
             </div>
@@ -160,6 +168,28 @@
             <div class="qr-code-scanner">
                 <img class="cancel-button" src="/img/cancel.png" />
                 <div class="video"></div>
+            </div>
+            <div class="keyboard">
+                <div class="row">
+                    <div class="button number">1</div>
+                    <div class="button number">2</div>
+                    <div class="button number">3</div>
+                </div>
+                <div class="row">
+                    <div class="button number">4</div>
+                    <div class="button number">5</div>
+                    <div class="button number">6</div>
+                </div>
+                <div class="row">
+                    <div class="button number">7</div>
+                    <div class="button number">8</div>
+                    <div class="button number">9</div>
+                </div>
+                <div class="row">
+                    <div class="button decimal">.</div>
+                    <div class="button number">0</div>
+                    <div class="button delete">&#9249;</div>
+                </div>
             </div>
         </div>
 
