@@ -10,6 +10,8 @@
         <script src="/js/http.js"></script>
         <script src="/js/libauth.js"></script>
         <script src="/js/qr-code.js"></script>
+        <script src="/js/jsqr.js"></script>
+        <script src="/js/qr-code-scanner.js"></script>
 
         <link rel="stylesheet" href="/css/core.css" />
         <script src="/js/core.js"></script>
@@ -71,6 +73,7 @@
             <div class="settings-screen">
                 <div class="navigation-container"><span class="settings-back-icon">&#8592;</span>Settings</div>
                 <div class="active-widget"></div>
+                <div class="camera-viewport hidden"></div>
                 <div class="footer">
                     <div class="save-button">Save &amp; Exit</div>
                 </div>
@@ -79,6 +82,7 @@
                 <div class="dialog-label"></div>
                 <input class="dialog-input" />
                 <div class="buttons">
+                    <img class="scan-qr-code-button" src="/img/address.png" />
                     <div class="button cancel">Cancel</div>
                     <div class="button confirm">Ok</div>
                 </div>
@@ -152,6 +156,10 @@
             <div class="menu-list-item">
                 <img class="menu-item-icon" />
                 <div class="menu-item-label"></div>
+            </div>
+            <div class="qr-code-scanner">
+                <img class="cancel-button" src="/img/cancel.png" />
+                <div class="video"></div>
             </div>
         </div>
 

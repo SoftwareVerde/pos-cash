@@ -56,7 +56,7 @@ class Util {
     }
 
     static createQrCode(content) {
-        return window.ninja.qrCode.createCanvas(content, 4);
+        return window.bitaddress.qrCode.createCanvas(content, 4);
     }
 
     static copyToClipboard(text) {
@@ -91,6 +91,39 @@ class Util {
         catch (error) { }
 
         body.removeChild(textArea);
+    }
+
+    static captureQrCodeFromCamera(renderDestination, callback) {
+        const templates = document.getElementById("templates");
+        const template = templates.querySelector(".qr-code-scanner");
+        const widget = template.cloneNode(true);
+
+        const video = widget.querySelector(".video");
+        const cancelButton = widget.querySelector(".cancel-button");
+
+        cancelButton.onclick = function() {
+            QrCodeScanner.stop();
+            widget.remove();
+
+            if (typeof callback == "function") {
+                window.setTimeout(function() {
+                    callback(null);
+                }, 0);
+            }
+        };
+
+        renderDestination.appendChild(widget);
+
+        QrCodeScanner.start(video, function(qrCode) {
+            QrCodeScanner.stop();
+            widget.remove();
+
+            if (typeof callback == "function") {
+                window.setTimeout(function() {
+                    callback(qrCode);
+                }, 0);
+            }
+        });
     }
 }
 

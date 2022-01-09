@@ -1056,10 +1056,10 @@
 	GitHub Repository: https://github.com/pointbiz/bitaddress.org
 */
 
-window.ninja = (window.ninja || { });
+window.bitaddress = (window.bitaddress || { });
 
-(function (ninja) {
-	var qrC = ninja.qrCode = {
+(function (bitaddress) {
+	var qrC = bitaddress.qrCode = {
 		// determine which type number is big enough for the input text length
 		getTypeNumber: function (text) {
 			var lengthCalculation = text.length * 8 + 12; // length as calculated by the QRCode
@@ -1126,4 +1126,4 @@ window.ninja = (window.ninja || { });
 			}
 		}
 	};
-})(ninja);
+})(bitaddress);

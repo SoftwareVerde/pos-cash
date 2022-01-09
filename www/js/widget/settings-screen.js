@@ -148,6 +148,8 @@ class SettingsScreen {
         };
         widget.addWidget(merchantNameSetting);
 
+        const cameraViewport = widget.querySelector(".camera-viewport");
+
         // Destination Address Setting Widget
         const destinationAddress = App.getDestinationAddress();
         const destinationAddressSetting = Setting.create("Destination Address", "/img/address.png", destinationAddress || "...");
@@ -162,12 +164,35 @@ class SettingsScreen {
                 const isValid = ( (value.length == 0) || App.isAddressValid(value) );
                 if (! isValid) {
                     App.displayToast("Invalid address.", true);
-                    return;
+                    return false;
                 }
 
                 destinationAddressSetting.setValue(value);
                 destinationAddressSetting.setDisplayValue(value || "...");
                 App.setDestinationAddress(value);
+                return true;
+            };
+
+            const scanQrCodeButton = dialogWidget.querySelector(".scan-qr-code-button");
+            scanQrCodeButton.onclick = function(event) {
+                event = event || window.event;
+                event.stopPropagation();
+
+                clearDialog();
+                cameraViewport.classList.remove("hidden");
+                Util.captureQrCodeFromCamera(cameraViewport, function(qrCode) {
+                    cameraViewport.classList.add("hidden");
+
+                    if (qrCode) {
+                        const wasValid = dialogWidget.onComplete(qrCode);
+                        if (wasValid) {
+                            App.displayToast("Address copied.", false);
+                        }
+                        else {
+                            App.displayToast("Invalid address.", true);
+                        }
+                    }
+                });
             };
 
             closeDialogOnEscape(dialogWidget);

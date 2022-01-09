@@ -19,6 +19,27 @@
     line-height: 2em;
 }
 
+.settings-screen .camera-viewport {
+    position: absolute;
+    top: calc(50vh - 25vh);
+    left: calc(50vw - 25vw);
+    left: calc(50vw - min(25vw, 300px));
+    width: 50vw;
+    max-width: 600px;
+    height: 20em;
+    background: #202020;
+    padding: 1em;
+    border-radius: 0.5em;
+    z-index: 2;
+    display: flex;
+}
+.settings-screen .camera-viewport.hidden {
+    display: none;
+}
+.settings-screen .camera-viewport > * {
+    flex-grow: 1;
+}
+
 .settings-screen .footer {
     text-align: center;
 }
@@ -49,7 +70,7 @@
     background: linear-gradient(23deg, #000000, #000000C0);
     padding: 1em;
     border-radius: 0.5em;
-    border: solid 2px #000000;
+    z-index: 1;
 }
 
 .settings-screen-dialog .dialog-label {
@@ -159,7 +180,28 @@
     border-radius: 0.375em;
 }
 
+.settings-screen-dialog .scan-qr-code-button {
+    display: inline-block;
+    float: left;
+    width: 3em;
+    margin-left: 1em;
+    margin-top: 1em;
+    cursor: pointer;
+    background-color: #202020;
+    border-radius: 0.5em;
+}
+
 @media (max-width: 600px) {
+    .settings-screen .camera-viewport {
+        top: 25vh;
+        bottom: 25vh;
+        left: 5vw;
+        right: 5vw;
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
     .settings-screen-dialog {
         top: 25vh;
         left: 5vw;

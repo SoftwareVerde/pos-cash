@@ -54,6 +54,28 @@ a, a:active, a:visited {
     display: none;
 }
 
+.qr-code-scanner {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    margin: 1em;
+}
+.qr-code-scanner .video {
+    /* Fill the container in height/width for the camera rendering. */
+    flex-grow: 1;
+}
+.qr-code-scanner .cancel-button {
+    position: absolute;
+    top: 0.25em;
+    right: 0.25em;
+    width: 3em;
+    background-color: #202020;
+    border-radius: 0.5em;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0.5em;
+}
+
 @media (max-width: 600px) {
     body {
         width: 100%;
