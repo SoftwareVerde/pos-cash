@@ -11,6 +11,11 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+body, #main {
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
 html, body, #main { }
 
 a, a:active, a:visited {

@@ -1,3 +1,10 @@
+.payment-screen {
+    background-image: url(/img/background.png);
+    background-size: contain;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
 .payment-screen .payment-content {
     text-align: center;
 }
