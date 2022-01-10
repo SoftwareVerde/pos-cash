@@ -7,7 +7,8 @@ class QrCodeScanner {
 
         state.isScanning = false;
 
-        const tracks = state.video.srcObject.getTracks();
+        const srcObject = state.video.srcObject;
+        const tracks = (srcObject ? srcObject.getTracks() : null) || [];
         for (let i = 0; i < tracks.length; i += 1) {
             const track = tracks[i];
             track.stop();
@@ -34,7 +35,6 @@ class QrCodeScanner {
         state.video = video;
         state.canvasElement = canvasElement;
         state.canvasContext = canvasContext;
-
 
         const onNewFrame = function() {
             if (! state.isScanning) { return; }
