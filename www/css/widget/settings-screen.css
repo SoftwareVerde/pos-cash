@@ -141,11 +141,28 @@
     left: 0.5em;
 }
 
+.settings-screen-dialog.edit-local-currency {
+    position: fixed; /* Input field without fixed misbehaves on mobile. */
+}
 .settings-screen-dialog .currency-list {
     overflow-y: scroll;
     height: 50%;
     background-color: #FFFFFF10;
     padding: 0.5em;
+}
+.settings-screen-dialog .currency-list-search {
+    color: #EAEAEA;
+    background-color: #505050;
+    border: none;
+    border-radius: 0.25em;
+    font-size: 1em;
+    box-sizing: border-box;
+    width: 95%;
+    margin: auto;
+    display: block;
+    margin-bottom: 0.75em;
+    margin-top: -0.75em;
+    padding: 0.25em;
 }
 .settings-screen-dialog .currency-list .currency-list-item {
     border-bottom: solid 2px #000000;

@@ -45,8 +45,13 @@ class Menu {
                     return;
                 }
 
-                const settingsScreen = SettingsScreen.create();
-                App.setScreen(settingsScreen);
+                App.setScreen(null);
+
+                // Add a delay to rendering due to the habit of entering pin too fast and pressing a settings button.
+                window.setTimeout(function() {
+                    const settingsScreen = SettingsScreen.create();
+                    App.setScreen(settingsScreen);
+                }, 350);
             };
             pinWidget.setLabel("Enter PIN Code");
             App.setScreen(pinWidget);

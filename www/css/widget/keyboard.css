@@ -12,15 +12,14 @@
     margin: 0;
 }
 .keyboard .button {
-    background: #444;
-    color: #eee;
-    border-radius: 4px;
-    box-shadow: 0 1px 0 #222, inset 0 1px 3px rgba(255,255,255,0.1);
+    background: #444444;
+    color: #EAEAEA;
+    border-radius: 0.25em;
+    box-shadow: 0 1px 0 #222222, inset 0 1px 3px rgba(255, 255, 255, 0.1);
     transition: 0.1s;
     align-items: center;
     align-content: center;
-    height: 57px;
-    border: 2px solid rgba(0,0,0,0.08);
+    border: 2px solid rgba(0, 0 ,0 , 0.08);
     cursor: pointer;
 
     margin: 0.5em;
@@ -29,9 +28,10 @@
     line-height: 3em;
     text-align: center;
     user-select: none;
+    font-size: 1.25em;
 }
 .keyboard .button:active {
     transform: translateY(1px);
-    background: #333;
-    box-shadow: 0 1px 0 #000;
+    background: #333333;
+    box-shadow: 0 1px 0 #000000;
 }

@@ -228,6 +228,31 @@ class SettingsScreen {
             const dialogTemplate = SettingsScreen.editLocalCurrencyDialogTemplate;
             const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, value);
 
+            const currencyListSearch = dialogWidget.querySelector(".currency-list-search");
+            currencyListSearch.onkeyup = function(event) {
+                event = event || window.event;
+
+                const regex = /[^a-z]/g;
+                const value = currencyListSearch.value.toLowerCase().replaceAll(regex, "");
+                let selectedItem = null;
+                for (let i = 0; i < items.length; i += 1) {
+                    const item = items[i];
+                    const country = item.country;
+                    const countryName = country.name.toLowerCase().replaceAll(regex, "");
+                    if (countryName.startsWith(value)) {
+                        selectedItem = item;
+                        break;
+                    }
+                }
+                if (selectedItem) {
+                    selectedItem.scrollIntoView();
+                }
+            };
+
+            window.setTimeout(function() {
+                currencyListSearch.focus();
+            });
+
             const currencyList = dialogWidget.querySelector(".currency-list");
             let selectedItem = null;
             const items = [];
@@ -272,28 +297,6 @@ class SettingsScreen {
                     selectedItem.scrollIntoView();
                 });
             }
-
-            window.onkeypress = function(event) {
-                event = event || window.event;
-
-                const key = (event.key || "").toLowerCase();
-                let selectedItem = null;
-                for (let i = 0; i < items.length; i += 1) {
-                    const item = items[i];
-                    const country = item.country;
-                    const countryName = country.name.toLowerCase();
-                    if (countryName.startsWith(key)) {
-                        selectedItem = item;
-                        break;
-                    }
-                }
-                if (selectedItem) {
-                    selectedItem.scrollIntoView();
-                }
-            };
-            dialogWidget.onClose = function() {
-                window.onkeypress = null; // Unset the global onkeypress.
-            };
 
             closeDialogOnEscape(dialogWidget);
         };
