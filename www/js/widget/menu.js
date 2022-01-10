@@ -73,6 +73,11 @@ class Menu {
             }
         };
 
+        const closeButton = widget.querySelector(".close-button");
+        closeButton.onclick = function() {
+            widget.close();
+        };
+
         widget.onclick = function(event) {
             event = event || window.event;
 

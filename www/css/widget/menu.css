@@ -66,6 +66,22 @@
     font-size: 2em;
 }
 
+.menu .close-button {
+    box-sizing: border-box;
+    display: inline-block;
+    margin-left: calc(25% - 1em);
+    margin-top: 2.5em;
+    width: 50%;
+    padding: 1em;
+    background-color: #EEEEEE;
+    border-radius: 0.5em;
+    text-align: center;
+    color: #202020;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 @media (max-width: 600px) {
     .menu .menu-content {
         width: 85vw;
