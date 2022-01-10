@@ -207,6 +207,9 @@
     background-color: #202020;
     border-radius: 0.5em;
 }
+.settings-screen-dialog .scan-qr-code-button.hidden {
+    display: none;
+}
 
 @media (max-width: 600px) {
     .settings-screen .camera-viewport {

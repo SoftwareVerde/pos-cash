@@ -32,17 +32,22 @@ class CheckoutScreen {
 
         const amountElement = widget.querySelector(".checkout-amount");
         const bchAmountElement = widget.querySelector(".checkout-amount-bch");
+        const checkoutLabel = widget.querySelector(".checkout-label");
         const checkoutButton = widget.querySelector(".checkout-button");
+
+        checkoutLabel.textContent = App.getString("checkout-screen", "checkout-label");
+        checkoutButton.textContent = App.getString("checkout-screen", "checkout-button");
 
         checkoutButton.onclick = function() {
             if (widget._fiatAmountString <= 0) {
                 App.displayToast("Invalid amount.", true);
+                App.displayToast(App.getString("checkout-screen", "toast-invalid-amount"), true);
                 return;
             }
 
             const destinationAddress = App.getDestinationAddress();
             if (! destinationAddress) {
-                App.displayToast("Merchant address is not set.", true);
+                App.displayToast(App.getString("checkout-screen", "toast-invalid-address"), true);
                 return;
             }
 

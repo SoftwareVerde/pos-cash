@@ -30,13 +30,17 @@ class TransactionsScreen {
             App.setScreen(checkoutScreen);
         };
 
+        const navigationContainerText = navigationContainer.querySelector(".text");
+        navigationContainerText.textContent = App.getString("transactions-screen", "title");
+
         const completedPayments = App.getCompletedPayments();
         if (completedPayments.length == 0) {
             completedPaymentsListElement.textContent = "No transactions.";
         }
         else {
             for (let i = 0; i < completedPayments.length; i += 1) {
-                const completedPayment = completedPayments[i];
+                const index = (completedPayments.length - i - 1); // Reverse order...
+                const completedPayment = completedPayments[index];
                 const itemElement = TransactionsScreen.createCompletedPaymentItem(completedPayment.fiatAmount, completedPayment.amount, completedPayment.timeCompleted);
                 completedPaymentsListElement.appendChild(itemElement);
             }

@@ -116,8 +116,12 @@ class SettingsScreen {
             App.setScreen(checkoutScreen);
         };
 
+        const navigationContainerText = navigationContainer.querySelector(".text");
+        navigationContainerText.textContent = App.getString("settings-screen", "title");
+
         // Save Button (Helper-butter; all settings saved upon edit)
         const saveButton = widget.querySelector(".save-button");
+        saveButton.textContent = App.getString("settings-screen", "save-button");
         saveButton.onclick = function() {
             clearDialog();
 
@@ -127,7 +131,7 @@ class SettingsScreen {
 
         // Merchant Name Setting Widget
         const merchantName = App.getMerchantName();
-        const merchantNameSetting = Setting.create("Merchant Name", "/img/merchant.png", merchantName || "...");
+        const merchantNameSetting = Setting.create(App.getString("settings-screen", "merchant-name"), "/img/merchant.png", merchantName || "...");
         merchantNameSetting.setValue(merchantName);
         merchantNameSetting.onClick = function() {
             const label = merchantNameSetting.getLabel();
@@ -152,7 +156,7 @@ class SettingsScreen {
 
         // Destination Address Setting Widget
         const destinationAddress = App.getDestinationAddress();
-        const destinationAddressSetting = Setting.create("Destination Address", "/img/address.png", destinationAddress || "...");
+        const destinationAddressSetting = Setting.create(App.getString("settings-screen", "destination-address"), "/img/address.png", destinationAddress || "...");
         destinationAddressSetting.setValue(destinationAddress);
         destinationAddressSetting.onClick = function() {
             const label = destinationAddressSetting.getLabel();
@@ -163,7 +167,7 @@ class SettingsScreen {
             dialogWidget.onComplete = function(value) {
                 const isValid = ( (value.length == 0) || App.isAddressValid(value) );
                 if (! isValid) {
-                    App.displayToast("Invalid address.", true);
+                    App.displayToast(App.getString("settings-screen", "toast-invalid-address"), true);
                     return false;
                 }
 
@@ -174,6 +178,7 @@ class SettingsScreen {
             };
 
             const scanQrCodeButton = dialogWidget.querySelector(".scan-qr-code-button");
+            scanQrCodeButton.classList.remove("hidden");
             scanQrCodeButton.onclick = function(event) {
                 event = event || window.event;
                 event.stopPropagation();
@@ -186,10 +191,10 @@ class SettingsScreen {
                     if (qrCode) {
                         const wasValid = dialogWidget.onComplete(qrCode);
                         if (wasValid) {
-                            App.displayToast("Address copied.", false);
+                            App.displayToast(App.getString("settings-screen", "toast-address-copied"), false);
                         }
                         else {
-                            App.displayToast("Invalid address.", true);
+                            App.displayToast(App.getString("settings-screen", "toast-invalid-address"), true);
                         }
                     }
                 });
@@ -218,7 +223,7 @@ class SettingsScreen {
         // Local Currency Setting Widget
         const currentCountryIso = App.getCountry();
         const currentCountry = App.getCountryData(currentCountryIso) || App.getCountryData("US");
-        const localCurrencySetting = Setting.create("Local Currency", "/img/currency.png", "US USD");
+        const localCurrencySetting = Setting.create(App.getString("settings-screen", "local-currency"), "/img/currency.png", "US USD");
         localCurrencySetting.setValue(currentCountry.iso);
         localCurrencySetting.setDisplayValue(currentCountry.iso + " " + currentCountry.currency);
         localCurrencySetting.onClick = function() {
@@ -303,7 +308,7 @@ class SettingsScreen {
         widget.addWidget(localCurrencySetting);
 
         // PIN Code Setting Widget
-        const pinSetting = Setting.create("PIN Code", "/img/pin.png", "####");
+        const pinSetting = Setting.create(App.getString("settings-screen", "pin-code"), "/img/pin.png", "####");
         pinSetting.onClick = function() {
             clearDialog();
 
@@ -337,10 +342,10 @@ class SettingsScreen {
         widget.addWidget(pinSetting);
 
         // Reset Settings Widget
-        const resetSetting = Setting.create("Reset Data", "/img/trash.png", "Clear all app data.");
+        const resetSetting = Setting.create(App.getString("settings-screen", "reset-data"), "/img/trash.png", App.getString("settings-screen", "reset-data-value"));
         resetSetting.onClick = function() {
             const dialogTemplate = SettingsScreen.editResetDialogTemplate;
-            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, "Reset Data", null, "Reset/clear all settings.");
+            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, App.getString("settings-screen", "reset-data"), null, App.getString("settings-screen", "reset-data-text"));
             dialogWidget.onComplete = function() {
                 window.localStorage.clear();
 
@@ -368,7 +373,7 @@ class SettingsScreen {
         widget.addWidget(resetSetting);
 
         // Map BitcoinDotCom Link
-        const mapLink = Setting.create("Advertise", "/img/business.png", "Add your business to map.bitcoin.com.");
+        const mapLink = Setting.create(App.getString("settings-screen", "advertise"), "/img/business.png", App.getString("settings-screen", "advertise-value"));
         mapLink.onClick = function() {
             window.open("https://map.bitcoin.com/", "_blank").focus();
         };

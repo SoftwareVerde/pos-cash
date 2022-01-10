@@ -1,5 +1,5 @@
 .menu.expanded {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -88,5 +88,10 @@
     }
     .menu .menu-content .menu-list .menu-list-item {
         margin-left: 0;
+        white-space: nowrap;
+    }
+    .menu .menu-content .menu-list .menu-list-item .menu-item-icon {
+        margin-left: 0;
+        margin-right: 1em;
     }
 }

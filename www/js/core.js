@@ -130,10 +130,11 @@ class Util {
 class App {
     static _onLoad = [];
     static _hasLoaded = false;
-    static _exchangeRateData = {};
+    static _exchangeRateData = { };
     static _webSockets = [];
     static _pendingPayment = null;
-    static _countries = [];
+    static _countries = null;
+    static _strings = null;
     static _sha256 = null;
     static _toastTimeout = null;
 
@@ -162,6 +163,34 @@ class App {
                 return false;
             }
         }
+        return true;
+    }
+
+    static initialize(callback) {
+        Http.get("/api/v1/countries.json", { }, function(data) {
+            App._countries = data;
+
+            if (App.isInitialized()) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+            }
+        });
+
+        Http.get("/api/v1/strings.json", { }, function(data) {
+            App._strings = data;
+
+            if (App.isInitialized()) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+            }
+        });
+    }
+
+    static isInitialized() {
+        if (App._countries == null) { return false; }
+        if (App._strings == null) { return false; }
         return true;
     }
 
@@ -245,6 +274,16 @@ class App {
     static getCountry() {
         const localStorage = window.localStorage;
         return localStorage.getItem("country") || "US";
+    }
+
+    static setLanguage(value) {
+        const localStorage = window.localStorage;
+        return localStorage.setItem("language", value);
+    }
+
+    static getLanguage() {
+        const localStorage = window.localStorage;
+        return localStorage.getItem("language") || "english";
     }
 
     static getCountries() {
@@ -401,7 +440,6 @@ class App {
 
             const objectType = message.objectType;
             if ( (objectType == "TRANSACTION") || (objectType == "TRANSACTION_HASH") ) {
-                console.log(webSocket._isSubscribed);
                 if (! webSocket._isSubscribed) { return; } // Prevent downloading transactions before the filter is set.
 
                 const transaction = message.object;
@@ -667,6 +705,22 @@ class App {
         }, duration);
     }
 
+    static getString(screen, field) {
+        const errorString = (screen + "." + field);
+
+        const language = App.getLanguage();
+        const strings = App._strings[language] || App._strings["english"];
+        if (strings == null) { return errorString; }
+
+        const screenStrings = strings[screen];
+        if (screenStrings == null) { return errorString; }
+
+        const fieldString = screenStrings[field];
+        if (fieldString == null) { return errorString; }
+
+        return fieldString;
+    }
+
     static main() {
         const main = document.getElementById("main");
         
@@ -694,10 +748,6 @@ class App {
 }
 
 App.addOnLoad(function() {
-    Http.get("/api/v1/countries.json", { }, function(data) {
-        App._countries = data;
-    });
-
     window.setTimeout(async function() {
         App._sha256 = await window.libauth.instantiateSha256();
     }, 0);

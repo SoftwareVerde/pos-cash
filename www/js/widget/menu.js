@@ -26,19 +26,19 @@ class Menu {
         merchantName.textContent = App.getMerchantName();
 
         const menuList = widget.querySelector(".menu-list");
-        menuList.appendChild(Menu.createMenuItem("Transactions", "/img/transactions.png", function() {
+        menuList.appendChild(Menu.createMenuItem(App.getString("menu", "transactions"), "/img/transactions.png", function() {
             widget.close();
 
             const transactionsScreen = TransactionsScreen.create();
             App.setScreen(transactionsScreen);
         }));
-        menuList.appendChild(Menu.createMenuItem("Settings", "/img/settings.png", function() {
+        menuList.appendChild(Menu.createMenuItem(App.getString("menu", "settings"), "/img/settings.png", function() {
             widget.close();
 
             const pinWidget = PinWidget.create(null, true);
             pinWidget.onComplete = function(pin) {
                 if (App.getPin() != pin) {
-                    App.displayToast("Incorrect PIN Code.", true);
+                    App.displayToast(App.getString("menu", "toast-invalid-pin"), true);
 
                     const checkoutScreen = CheckoutScreen.create();
                     App.setScreen(checkoutScreen);
@@ -53,7 +53,7 @@ class Menu {
                     App.setScreen(settingsScreen);
                 }, 350);
             };
-            pinWidget.setLabel("Enter PIN Code");
+            pinWidget.setLabel(App.getString("menu", "pin-label"));
             App.setScreen(pinWidget);
 
             window.setTimeout(function() {
@@ -74,6 +74,7 @@ class Menu {
         };
 
         const closeButton = widget.querySelector(".close-button");
+        closeButton.textContent = App.getString("menu", "close-button");
         closeButton.onclick = function() {
             widget.close();
         };

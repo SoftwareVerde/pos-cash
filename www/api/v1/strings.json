@@ -1,0 +1,92 @@
+{
+    "english": {
+        "checkout-screen": {
+            "checkout-label": "Enter an amount.",
+            "checkout-button": "Checkout",
+            "toast-invalid-amount": "Invalid amount.",
+            "toast-invalid-address": "Destination address is not set."
+        },
+        "menu": {
+            "transactions": "Transactions",
+            "settings": "Settings",
+            "pin-label": "Enter PIN Code",
+            "close-button": "Close",
+            "toast-invalid-pin": "Incorrect PIN Code."
+        },
+        "transactions-screen": {
+            "title": "Transactions"
+        },
+        "settings-screen": {
+            "title": "Settings",
+            "merchant-name": "Merchant Name",
+            "destination-address": "Destination Address",
+            "local-currency": "Local Currency",
+            "pin-code": "PIN Code",
+            "reset-data": "Reset Data",
+            "reset-data-value": "Clear all app data.",
+            "reset-data-text": "Reset/clear all settings?",
+            "advertise": "Advertise",
+            "advertise-value": "Add your business to map.bitcoin.com.",
+            "save-button": "Save & Exit",
+            "toast-invalid-address": "Invalid address.",
+            "toast-address-copied": "Address copied."
+        },
+        "payment-screen": {
+            "payment-label": "Scan to Pay",
+            "toast-copy-payment": "Text copied."
+        },
+        "payment-received-screen": {
+            "success-label": "Payment complete. Thank you.",
+            "done-button": "Done"
+        },
+        "pin-screen": {
+            "pin-label": "Create PIN Code",
+            "confirm-pin-label": "Confirm PIN Code"
+        }
+    },
+    "spanish": {
+        "checkout-screen": {
+            "checkout-label": "Ingresar monto",
+            "checkout-button": "Cobrar",
+            "toast-invalid-amount": "Monto inválido",
+            "toast-invalid-address": "La dirección de destino no está configurada"
+        },
+        "menu": {
+            "transactions": "Transacciones",
+            "settings": "Configuraciones",
+            "pin-label": "Ingresar el código PIN",
+            "close-button": "Cerrar",
+            "toast-invalid-pin": "Código PIN incorrecto"
+        },
+        "transactions-screen": {
+            "title": "Transacciones"
+        },
+        "settings-screen": {
+            "title": "Configuraciones",
+            "merchant-name": "Nombre del comercio",
+            "destination-address": "Dirección de destino",
+            "local-currency": "Moneda local",
+            "pin-code": "Código PIN",
+            "reset-data": "Reiniciar datos",
+            "reset-data-value": "Borrar todos los datos de la aplicación.",
+            "reset-data-text": "Restablecer / Borrar todas las configuraciones?",
+            "advertise": "Anunciarse",
+            "advertise-value": "Agregar su negocio a map.bitcoin.com",
+            "save-button": "Guardar & Salir",
+            "toast-invalid-address": "Dirección inválida",
+            "toast-address-copied": "Dirección copiada"
+        },
+        "payment-screen": {
+            "payment-label": "Escanear para pagar",
+            "toast-copy-payment": "Texto copiado"
+        },
+        "payment-received-screen": {
+            "success-label": "Pago completado.  Gracias.",
+            "done-button": "Hecho"
+        },
+        "pin-screen": {
+            "pin-label": "Crear código PIN",
+            "confirm-pin-label": "Confirmar código PIN"
+        }
+    }
+}

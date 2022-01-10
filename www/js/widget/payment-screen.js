@@ -7,8 +7,11 @@ class PaymentScreen {
 
         const fiatAmountElement = widget.querySelector(".payment-amount");
         const bchAmountElement = widget.querySelector(".payment-amount-bch");
+        const labelElement = widget.querySelector(".payment-label");
         const qrCodeElement = widget.querySelector(".qr-code");
         const cancelButton = widget.querySelector(".cancel-button");
+
+        labelElement.textContent = App.getString("payment-screen", "payment-label");
 
         const destinationAddress = App.getDestinationAddress();
         const cashAddress = App.convertToCashAddress(destinationAddress);
@@ -26,7 +29,7 @@ class PaymentScreen {
 
         qrCodeElement.onclick = function() {
             Util.copyToClipboard(qrCodeContent);
-            App.displayToast("Text copied.", false, 1000);
+            App.displayToast(App.getString("payment-screen", "toast-copy-payment"), false, 1000);
         };
 
         cancelButton.onclick = function() {

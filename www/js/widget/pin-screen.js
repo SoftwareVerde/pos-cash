@@ -6,7 +6,10 @@ class PinScreen {
         const keyboardContainer = widget.querySelector(".keyboard-container");
 
         const pinWidget = PinWidget.create();
+        const confirmPinWidget = PinWidget.create();
         const keyboardWidget = Keyboard.create();
+
+        pinWidget.setLabel(App.getString("pin-screen", "pin-label"));
 
         keyboardWidget.onButtonPressed = function(value) {
             const pinWidget = widget.activeWidget;
@@ -16,8 +19,7 @@ class PinScreen {
         };
         keyboardContainer.appendChild(keyboardWidget);
 
-        const confirmPinWidget = PinWidget.create();
-        confirmPinWidget.setLabel("Confirm PIN Code");
+        confirmPinWidget.setLabel(App.getString("pin-screen", "confirm-pin-label"));
         confirmPinWidget.onComplete = function(value) {
             const firstValue = pinWidget.getValue();
             const expectedValue = App.hash(firstValue);

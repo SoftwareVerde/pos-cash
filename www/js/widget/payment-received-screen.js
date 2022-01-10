@@ -3,7 +3,11 @@ class PaymentReceivedScreen {
         const template = PaymentReceivedScreen.template;
         const widget = template.cloneNode(true);
 
+        const successLabel = widget.querySelector(".success-label");
         const doneButton = widget.querySelector(".done-button");
+
+        successLabel.textContent = App.getString("payment-received-screen", "success-label");
+        doneButton.textContent = App.getString("payment-received-screen", "done-button");
 
         doneButton.onclick = function() {
             const checkoutScreen = CheckoutScreen.create();
