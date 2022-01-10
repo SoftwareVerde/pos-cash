@@ -262,6 +262,7 @@ class SettingsScreen {
             let selectedItem = null;
             const items = [];
             const countries = App.getCountries();
+            const originalCountry = App.getCountry();
             for (let i = 0; i < countries.length; i += 1) {
                 const country = countries[i];
 
@@ -283,6 +284,12 @@ class SettingsScreen {
                     App.setCountry(country.iso);
 
                     clearDialog();
+
+                    if (originalCountry != country.iso) {
+                        // Reload the settings page to update language.
+                        const settingsScreen = SettingsScreen.create();
+                        App.setScreen(settingsScreen);
+                    }
                 };
 
                 if (country.iso == currentCountry.iso) {

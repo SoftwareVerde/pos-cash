@@ -276,14 +276,16 @@ class App {
         return localStorage.getItem("country") || "US";
     }
 
-    static setLanguage(value) {
-        const localStorage = window.localStorage;
-        return localStorage.setItem("language", value);
-    }
-
     static getLanguage() {
-        const localStorage = window.localStorage;
-        return localStorage.getItem("language") || "english";
+        const country = App.getCountry();
+        const countryData = App.getCountryData(country);
+        const language = countryData.lang.substring(0, 2);
+
+        switch (language) {
+            case "en": return "english";
+            case "es": return "spanish";
+            default: return "english";
+        }
     }
 
     static getCountries() {
