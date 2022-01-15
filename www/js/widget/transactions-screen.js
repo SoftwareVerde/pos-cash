@@ -10,7 +10,7 @@ class TransactionsScreen {
         const bchAmount = Util.fromSatoshis(bchAmountSatoshis);
         const paymentAmounts = App.formatFiatAmount(fiatAmount, bchAmount);
 
-        fiatAmountElement.textContent = "$" + paymentAmounts.fiat;
+        fiatAmountElement.textContent = App.getCurrencySymbol() + paymentAmounts.fiat;
         bchAmountElement.textContent = paymentAmounts.bch + " BCH";
         timestampElement.textContent = (new Date(timestamp * 1000)).toLocaleString();
 

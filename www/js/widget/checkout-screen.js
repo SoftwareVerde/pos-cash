@@ -88,7 +88,7 @@ class CheckoutScreen {
 
             widget._fiatAmountString = displayAmounts.fiatValue;
 
-            amountElement.textContent = "$" + displayAmounts.fiat;
+            amountElement.textContent = App.getCurrencySymbol() + displayAmounts.fiat;
             bchAmountElement.textContent = displayAmounts.bch + " BCH";
         };
 
@@ -131,6 +131,8 @@ class CheckoutScreen {
             window.onkeypress = null;
             window.onkeydown = null;
         };
+
+        widget.setAmount(widget._fiatAmountString);
 
         return widget;
     }

@@ -177,6 +177,16 @@ class App {
             }
         });
 
+        Http.get("/api/v1/currency-symbols.json", { }, function(data) {
+            App._currencySymbols = data;
+
+            if (App.isInitialized()) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+            }
+        });
+
         Http.get("/api/v1/strings.json", { }, function(data) {
             App._strings = data;
 
@@ -191,6 +201,7 @@ class App {
     static isInitialized() {
         if (App._countries == null) { return false; }
         if (App._strings == null) { return false; }
+        if (App._currencySymbols == null) { return false; }
         return true;
     }
 
@@ -274,6 +285,15 @@ class App {
     static getCountry() {
         const localStorage = window.localStorage;
         return localStorage.getItem("country") || "US";
+    }
+
+    static getCurrencySymbol() {
+        const country = App.getCountry();
+        const countryData = App.getCountryData(country);
+        const currency = countryData.currency;
+        const currencySymbol = App._currencySymbols[currency];
+
+        return currencySymbol || "$";
     }
 
     static getLanguage() {

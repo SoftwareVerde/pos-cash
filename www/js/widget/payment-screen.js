@@ -18,7 +18,7 @@ class PaymentScreen {
 
         const displayAmounts = App.formatFiatAmount(fiatAmountString);
 
-        fiatAmountElement.textContent = "$" + displayAmounts.fiat;
+        fiatAmountElement.textContent = App.getCurrencySymbol() + displayAmounts.fiat;
         bchAmountElement.textContent = displayAmounts.bch + " BCH";
 
         const merchantName = App.getMerchantName();
