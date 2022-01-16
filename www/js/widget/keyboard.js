@@ -1,3 +1,4 @@
+"use strict";
 class Keyboard {
     static createEvent(value) {
         const event = {

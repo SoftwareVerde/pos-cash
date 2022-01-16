@@ -1,3 +1,4 @@
+"use strict";
 class PinScreen {
     static create(onCompleteCallback) {
         const template = PinScreen.template;

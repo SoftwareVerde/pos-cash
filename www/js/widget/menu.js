@@ -1,3 +1,4 @@
+"use strict";
 class Menu {
     static createMenuItem(label, icon, onClickCallback) {
         const template = Menu.itemTemplate;

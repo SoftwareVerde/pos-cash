@@ -1,3 +1,4 @@
+"use strict";
 class Http {
     static _jsonToQueryString(jsonData) {
         return Object.keys((jsonData ? jsonData : { })).map(key => window.encodeURIComponent(key) + "=" + window.encodeURIComponent(jsonData[key])).join("&");

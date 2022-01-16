@@ -1,3 +1,4 @@
+"use strict";
 class TransactionsScreen {
     static createCompletedPaymentItem(fiatAmount, bchAmountSatoshis, timestamp) {
         const template = TransactionsScreen.paymentItemTemplate;

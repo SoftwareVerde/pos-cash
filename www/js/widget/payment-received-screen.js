@@ -1,3 +1,4 @@
+"use strict";
 class PaymentReceivedScreen {
     static create(amount) {
         const template = PaymentReceivedScreen.template;

@@ -1,3 +1,4 @@
+"use strict";
 class QrCodeScanner {
     static _state = { };
 

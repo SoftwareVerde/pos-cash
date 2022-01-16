@@ -1,3 +1,4 @@
+"use strict";
 window.MAX_SAFE_INTEGER = window.Number.MAX_SAFE_INTEGER || 9007199254740991;
 
 class Util {

@@ -1,3 +1,4 @@
+"use strict";
 class Setting {
     static create(title, iconUrl, displayValue) {
         const template = Setting.template;

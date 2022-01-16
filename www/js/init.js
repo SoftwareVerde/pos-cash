@@ -1,3 +1,4 @@
+"use strict";
 window.setTimeout(function() {
     const startMs = Date.now();
     App.initialize(function() {

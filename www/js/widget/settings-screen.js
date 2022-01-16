@@ -1,3 +1,4 @@
+"use strict";
 class SettingsScreen {
     static createEditDialog(dialogTemplate, label, value, text) {
         const dialogWidget = dialogTemplate.cloneNode(true);

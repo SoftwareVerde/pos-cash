@@ -1,3 +1,4 @@
+"use strict";
 class CheckoutScreen {
     static create() {
         const template = CheckoutScreen.template;

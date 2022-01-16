@@ -1,3 +1,4 @@
+"use strict";
 class PinWidget {
     static create(onCompleteCallback, showKeyboard) {
         const template = PinWidget.template;
