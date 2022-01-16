@@ -138,19 +138,38 @@ class App {
     static _sha256 = null;
     static _toastTimeout = null;
 
+    static setAddressVersion(addressString, addressObject) {
+        if (addressString.startsWith("3") || addressString.startsWith("p")) {
+            addressObject.version = 1;
+        }
+        else if (addressString.startsWith("1") || addressString.startsWith("q")) {
+            addressObject.version = 0;
+        }
+    }
+
     static _decodeAddress(addressString) {
         const isValidResult = function(result) {
             return (result && typeof result != "string");
         };
 
         let result = window.libauth.decodeBase58Address(App._sha256, addressString);
-        if (isValidResult(result)) { return result; }
+        if (isValidResult(result)) {
+            App.setAddressVersion(addressString, result);
+            return result;
+        }
 
-        result = window.libauth.decodeCashAddressFormat(addressString);
-        if (isValidResult(result)) { return result; }
+        result = window.libauth.decodeCashAddress(addressString);
+        if (isValidResult(result)) {
+            const nonPrefixAddressString = addressString.substring(addressString.indexOf(":"));
+            App.setAddressVersion(nonPrefixAddressString, result);
+            return result;
+        }
 
-        result = window.libauth.decodeCashAddressFormat("bitcoincash:" + addressString);
-        if (isValidResult(result)) { return result; }
+        result = window.libauth.decodeCashAddress("bitcoincash:" + addressString);
+        if (isValidResult(result)) {
+            App.setAddressVersion(addressString, result);
+            return result;
+        }
 
         return null;
     }
