@@ -29,8 +29,8 @@ class Util {
         return (decimalSeparator == "." ? "," : ".");
     }
 
-    static getDecimalCount(amount) {
-        const decimalSeparator = Util.getDecimalSeparator();
+    static getDecimalCount(amount, decimalSeparator) {
+        decimalSeparator = (decimalSeparator || Util.getDecimalSeparator());
         const amountString = amount;
         const decimalIndex = amountString.indexOf(decimalSeparator);
         if (decimalIndex < 0) { return 0; }
@@ -130,7 +130,7 @@ class Util {
 class App {
     static _onLoad = [];
     static _hasLoaded = false;
-    static _exchangeRateData = { };
+    static _exchangeRateData = null;
     static _webSockets = [];
     static _pendingPayment = null;
     static _countries = null;
@@ -196,12 +196,22 @@ class App {
                 }
             }
         });
+
+        App.updateExchangeRate(function() {
+            if (App.isInitialized()) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+            }
+        });
     }
 
     static isInitialized() {
         if (App._countries == null) { return false; }
         if (App._strings == null) { return false; }
         if (App._currencySymbols == null) { return false; }
+        if (App._exchangeRateData == null) { return false; }
+
         return true;
     }
 
@@ -364,7 +374,9 @@ class App {
         return window.libauth.binToBase58(hash);
     }
 
-    static updateExchangeRate() {
+    static updateExchangeRate(callback) {
+        let callbackWasInvoked = false;
+
         Http.get("https://markets.api.bitcoin.com/rates", {"c": "BCH"}, function(data) {
             if ( (! data) || (data.length == 0) ) { return; }
 
@@ -375,7 +387,15 @@ class App {
             }
 
             rates.timestamp = Math.floor(Date.now() / 1000);
+            App._exchangeRateData = (App._exchangeRateData || { });
             App._exchangeRateData["bitcoin.com"] = rates;
+
+            if (! callbackWasInvoked) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+                callbackWasInvoked = true;
+            }
         });
 
         Http.get("https://api.coinbase.com/v2/exchange-rates", {"currency": "BCH"}, function(result) {
@@ -383,7 +403,15 @@ class App {
 
             const rates = result.data.rates;
             rates.timestamp = Math.floor(Date.now() / 1000);
+            App._exchangeRateData = (App._exchangeRateData || { });
             App._exchangeRateData["coinbase.com"] = rates;
+
+            if (! callbackWasInvoked) {
+                if (typeof callback == "function") {
+                    callback();
+                }
+                callbackWasInvoked = true;
+            }
         });
         
     }
@@ -655,6 +683,14 @@ class App {
     static formatFiatAmount(fiatAmountString, bchAmountString) {
         fiatAmountString = ("" + fiatAmountString); // Guarantee string.
 
+        const decimalSeparator = Util.getDecimalSeparator();
+        const thousandsSeparator = Util.getThousandsSeparator();
+
+        if (decimalSeparator == ",") {
+            fiatAmountString = fiatAmountString.replaceAll(".", ""); // Defensively remove any periods.
+            fiatAmountString = fiatAmountString.replaceAll(",", "."); // window.parseFloat always requires period, not comma, regardless of locale.
+        }
+
         const isInvalid = window.isNaN(window.parseFloat(fiatAmountString));
         if (isInvalid) { return null; }
 
@@ -662,14 +698,11 @@ class App {
         const maxValue = 4294967296;
         if (window.parseFloat(fiatAmountString) > maxValue) { return null; }
 
-        const decimalSeparator = Util.getDecimalSeparator();
-        const thousandsSeparator = Util.getThousandsSeparator();
-
         const countryIso = App.getCountry();
         const country = App.getCountryData(countryIso);
 
-        const fiatDecimalIndex = fiatAmountString.indexOf(decimalSeparator);
-        const fiatDecimalCount = window.Math.min(Util.getDecimalCount(fiatAmountString), country.decimals);
+        const fiatDecimalIndex = fiatAmountString.indexOf(".");
+        const fiatDecimalCount = window.Math.min(Util.getDecimalCount(fiatAmountString, "."), country.decimals);
 
         if (fiatDecimalIndex >= 0) {
             fiatAmountString = fiatAmountString.substring(0, fiatDecimalIndex + fiatDecimalCount + 1);
@@ -696,6 +729,10 @@ class App {
         const bchFormatOptions = { maximumFractionDigits: 8, minimumFractionDigits: 8 };
         const bchDisplayString = bchAmountFloat.toLocaleString(undefined, bchFormatOptions);
         const bchValue = bchAmountFloat.toFixed(8);
+
+        if (decimalSeparator == ",") {
+            fiatAmountString = fiatAmountString.replaceAll(".", ",");
+        }
 
         return {
             fiatValue: fiatAmountString,
@@ -774,7 +811,6 @@ App.addOnLoad(function() {
         App._sha256 = await window.libauth.instantiateSha256();
     }, 0);
 
-    App.updateExchangeRate();
     App.updateExchangeRate.timeout = window.setInterval(function() {
         App.updateExchangeRate();
     }, (2 * 60 * 1000));

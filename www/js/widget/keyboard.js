@@ -5,15 +5,17 @@ class Keyboard {
             keyCode: null
         };
 
-        if (value == "." || value >= 0) {
+        const decimalSeparator = Util.getDecimalSeparator();
+        const intValue = window.parseInt(value);
+        if (intValue >= 0) {
             event.key = value;
-            event.keyCode = (48 + window.parseInt(value));
+            event.keyCode = (48 + intValue);
         }
-        else if (value == "." || value >= 0) {
+        else if (value == decimalSeparator) {
             event.key = value;
-            event.keyCode = 190;
+            event.keyCode = (value == "." ? 190 : 188);
         }
-        else {
+        else { // Delete Key
             event.key = null;
             event.keyCode = Util.KeyCodes.delete;
         }
@@ -46,11 +48,12 @@ class Keyboard {
         decimalButton.onclick = function(event) {
             event = event || window.event;
 
-            const value = ".";
+            const value = Util.getDecimalSeparator();
             if (typeof widget.onButtonPressed == "function") {
                 widget.onButtonPressed(value);
             }
         };
+        decimalButton.textContent = Util.getDecimalSeparator();
 
         const deleteButton = widget.querySelector(".button.delete");
         deleteButton.onclick = function(event) {
