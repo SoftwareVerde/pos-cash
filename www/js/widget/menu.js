@@ -27,13 +27,16 @@ class Menu {
         merchantName.textContent = App.getMerchantName();
 
         const menuList = widget.querySelector(".menu-list");
-        menuList.appendChild(Menu.createMenuItem(App.getString("menu", "transactions"), "/img/transactions.png", function() {
+
+        const transactionsMenuItem = Menu.createMenuItem(App.getString("menu", "transactions"), "/img/transactions.png", function() {
             widget.close();
 
             const transactionsScreen = TransactionsScreen.create();
             App.setScreen(transactionsScreen);
-        }));
-        menuList.appendChild(Menu.createMenuItem(App.getString("menu", "settings"), "/img/settings.png", function() {
+        })
+        menuList.appendChild(transactionsMenuItem);
+
+        const settingsMenuItem = Menu.createMenuItem(App.getString("menu", "settings"), "/img/settings.png", function() {
             widget.close();
 
             const pinWidget = PinWidget.create(null, true);
@@ -60,7 +63,16 @@ class Menu {
             window.setTimeout(function() {
                 pinWidget.focus();
             }, 0);
-        }));
+        });
+        menuList.appendChild(settingsMenuItem);
+
+        const advertiseMenuItem = Menu.createMenuItem(App.getString("settings-screen", "advertise"), "/img/business.png", function() {
+            widget.close();
+
+            window.open("https://map.bitcoin.com/", "_blank").focus();
+        });
+        advertiseMenuItem.classList.add("advertise");
+        menuList.appendChild(advertiseMenuItem);
 
         const contentElement = widget.querySelector(".menu-content");
 

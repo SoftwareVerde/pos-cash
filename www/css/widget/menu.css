@@ -66,10 +66,33 @@
     font-size: 2em;
 }
 
+.menu .menu-content .menu-list .menu-list-item.advertise {
+    font-size: 0.75em;
+    margin: auto;
+    border-radius: 1em;
+    text-align: center;
+    width: 75%;
+    background-color: #0DC589;
+    color: #202020;
+    margin-top: 5em;
+    margin-bottom: 2em;
+    box-sizing: border-box;
+    opacity: 75%;
+}
+.menu .menu-content .menu-list .menu-list-item.advertise .menu-item-icon {
+    margin-left: 1em;
+    margin-right: 1em;
+    float: none;
+    display: inline-block;
+    margin: 0;
+    vertical-align: bottom;
+    margin-right: 1em;
+}
+
 .menu .close-button {
     box-sizing: border-box;
     display: inline-block;
-    margin-left: calc(25% - 1em);
+    margin-left: 25%;
     margin-top: 2.5em;
     width: 50%;
     padding: 1em;
