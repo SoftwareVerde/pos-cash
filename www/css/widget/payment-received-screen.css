@@ -1,11 +1,32 @@
 .payment-received-screen {
-    background-color: #09C58A;
+    background-color: #858585;
+    color: #202020;
     padding-top: 3em;
     height: 90vh;
     text-align: center;
 }
 
-.payment-received-screen .success-icon {
+.payment-received-screen.success {
+    background-color: #09C58A;
+    color: #EAEAEA;
+}
+
+.payment-received-screen.failure {
+    background-color: #C50909;
+    color: #EAEAEA;
+}
+
+.payment-received-screen .failure-icon,
+.payment-received-screen .failure-label,
+.payment-received-screen .success-icon,
+.payment-received-screen .success-label {
+    display: none;
+}
+
+.payment-received-screen .double-spend-countdown,
+.payment-received-screen.failure .failure-icon,
+.payment-received-screen.success .success-icon {
+    display: block;
     font-size: 3em;
     padding: 0.5em;
     border-radius: 50%;
@@ -19,7 +40,9 @@
     line-height: 1.5em;
 }
 
-.payment-received-screen .success-label {
+.payment-received-screen.failure .failure-label,
+.payment-received-screen.success .success-label {
+    display: block;
     font-weight: bold;
     font-size: 1.5em;
     color: #EAEAEA;
@@ -38,6 +61,24 @@
     display: inline-block;
     margin-top: 3em;
     cursor: pointer;
+}
+
+.payment-received-screen.failure .done-button,
+.payment-received-screen.failure .failure-icon {
+    color: #C50909;
+}
+
+.payment-received-screen.failure .double-spend-checker,
+.payment-received-screen.success .double-spend-checker {
+    display: none;
+}
+.payment-received-screen .double-spend-checker .double-spend-countdown {
+    color: #202020;
+}
+.payment-received-screen .double-spend-checker .double-spend-checker-label {
+    font-size: 0.80em;
+    color: #EAEAEA;
+    font-style: italic;
 }
 
 @media (max-width: 600px) {

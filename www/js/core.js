@@ -139,7 +139,7 @@ class App {
     static _sha256 = null;
     static _toastTimeout = null;
 
-    static setAddressVersion(addressString, addressObject) {
+    static _setAddressVersion(addressString, addressObject) {
         if (addressString.startsWith("3") || addressString.startsWith("p")) {
             addressObject.version = 1;
         }
@@ -155,20 +155,20 @@ class App {
 
         let result = window.libauth.decodeBase58Address(App._sha256, addressString);
         if (isValidResult(result)) {
-            App.setAddressVersion(addressString, result);
+            App._setAddressVersion(addressString, result);
             return result;
         }
 
         result = window.libauth.decodeCashAddress(addressString);
         if (isValidResult(result)) {
             const nonPrefixAddressString = addressString.substring(addressString.indexOf(":"));
-            App.setAddressVersion(nonPrefixAddressString, result);
+            App._setAddressVersion(nonPrefixAddressString, result);
             return result;
         }
 
         result = window.libauth.decodeCashAddress("bitcoincash:" + addressString);
         if (isValidResult(result)) {
-            App.setAddressVersion(addressString, result);
+            App._setAddressVersion(addressString, result);
             return result;
         }
 
@@ -352,17 +352,17 @@ class App {
         return null;
     }
 
-    static isMultiTerminalEnabled() {
+    static isDoubleSpendCheckEnabled() {
         const localStorage = window.localStorage;
-        const isEnabled = localStorage.getItem("multiTerminalIsEnabled");
+        const isEnabled = window.parseInt(localStorage.getItem("doubleSpendCheckIsEnabled"));
 
-        if (isEnabled == null) { return false; }
+        if (isEnabled == null || window.isNaN(isEnabled)) { return true; }
         return (isEnabled ? true : false);
     }
 
-    static setMultiTerminalIsEnabled(isEnabled) {
+    static setDoubleSpendCheckIsEnabled(isEnabled) {
         const localStorage = window.localStorage;
-        return localStorage.setItem("multiTerminalIsEnabled", (isEnabled ? true : false));
+        return localStorage.setItem("doubleSpendCheckIsEnabled", (isEnabled ? 1 : 0));
     }
 
     static isAddressValid(addressString) {
@@ -394,6 +394,18 @@ class App {
         return window.libauth.binToBase58(hash);
     }
 
+    static checkForDoubleSpend(transactionHash, callback) {
+        Http.get("https://explorer.bitcoinverde.org/api/v1/transactions/" + transactionHash + "/double-spend-proofs", { }, function(data) {
+            if ( (! data) || (! data.wasSuccess) ) {
+                callback(null);
+                return;
+            }
+
+            const doubleSpendProofs = data.doubleSpendProofs;
+            callback(doubleSpendProofs.length != 0);
+        });
+    }
+
     static updateExchangeRate(callback) {
         let callbackWasInvoked = false;
 
@@ -406,7 +418,7 @@ class App {
                 rates[exchangeData.code] = exchangeData.rate;
             }
 
-            rates.timestamp = Math.floor(Date.now() / 1000);
+            rates.timestamp = Math.floor(window.Date.now() / 1000);
             App._exchangeRateData = (App._exchangeRateData || { });
             App._exchangeRateData["bitcoin.com"] = rates;
 
@@ -422,7 +434,7 @@ class App {
             if ( (! result) || (! result.data) ) { return; }
 
             const rates = result.data.rates;
-            rates.timestamp = Math.floor(Date.now() / 1000);
+            rates.timestamp = Math.floor(window.Date.now() / 1000);
             App._exchangeRateData = (App._exchangeRateData || { });
             App._exchangeRateData["coinbase.com"] = rates;
 
@@ -674,7 +686,7 @@ class App {
 
         if (pendingPayment.receivedAmount >= pendingPayment.amount) {
             console.log("Payment completed.");
-            pendingPayment.timeCompleted = window.Math.floor(Date.now() / 1000);
+            pendingPayment.timeCompleted = window.Math.floor(window.Date.now() / 1000);
 
             // Store the completed payment.
             App.addCompletedPayment(pendingPayment);
@@ -684,7 +696,7 @@ class App {
 
             // Display payment-received screen.
             window.setTimeout(function() {
-                const paymentReceivedScreen = PaymentReceivedScreen.create();
+                const paymentReceivedScreen = PaymentReceivedScreen.create(pendingPayment);
                 App.setScreen(paymentReceivedScreen);
             }, 0);
         }

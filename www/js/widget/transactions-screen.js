@@ -13,7 +13,7 @@ class TransactionsScreen {
 
         fiatAmountElement.textContent = App.getCurrencySymbol() + paymentAmounts.fiat;
         bchAmountElement.textContent = paymentAmounts.bch + " BCH";
-        timestampElement.textContent = (new Date(timestamp * 1000)).toLocaleString();
+        timestampElement.textContent = (new window.Date(timestamp * 1000)).toLocaleString();
 
         return widget;
     }

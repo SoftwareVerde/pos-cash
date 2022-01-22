@@ -29,7 +29,11 @@
             "advertise-value": "Add your business to map.bitcoin.com.",
             "save-button": "Save & Exit",
             "toast-invalid-address": "Invalid address.",
-            "toast-address-copied": "Address copied."
+            "toast-address-copied": "Address copied.",
+            "enable-double-spend-check": "Double Spend Check",
+            "enable-double-spend-check-description": "Enable checking for fraudulent payments from customers. Enabling this option will cause a 3 second delay during checkout.",
+            "enable-double-spend-check-no": "Disabled",
+            "enable-double-spend-check-yes": "Enabled"
         },
         "payment-screen": {
             "payment-label": "Scan to Pay",
@@ -37,6 +41,8 @@
         },
         "payment-received-screen": {
             "success-label": "Payment complete. Thank you.",
+            "failure-label": "Payment was not received.",
+            "double-spend-checker-label": "Waiting for payment to finalize...",
             "done-button": "Done"
         },
         "pin-screen": {
@@ -74,7 +80,11 @@
             "advertise-value": "Agregar su negocio a map.bitcoin.com",
             "save-button": "Guardar & Salir",
             "toast-invalid-address": "Dirección inválida",
-            "toast-address-copied": "Dirección copiada"
+            "toast-address-copied": "Dirección copiada",
+            "enable-double-spend-check": "Cheque de Doble Gasto",
+            "enable-double-spend-check-description": "Habilite la comprobación de pagos fraudulentos de clientes. Habilitar esta opción causará un retraso de 3 segundos durante el proceso de pago.",
+            "enable-double-spend-check-no": "Desactivar",
+            "enable-double-spend-check-yes": "Permitir"
         },
         "payment-screen": {
             "payment-label": "Escanear para pagar",
@@ -82,6 +92,8 @@
         },
         "payment-received-screen": {
             "success-label": "Pago completado.  Gracias.",
+            "failure-label": "No se recibió el pago.",
+            "double-spend-checker-label": "Esperando a que finalice el pago...",
             "done-button": "Hecho"
         },
         "pin-screen": {

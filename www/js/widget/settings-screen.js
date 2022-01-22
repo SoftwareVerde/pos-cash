@@ -349,6 +349,36 @@ class SettingsScreen {
         };
         widget.addWidget(pinSetting);
 
+        // DoubleSpend Check Setting Widget
+        const doubleSpendCheckIsEnabled = App.isDoubleSpendCheckEnabled();
+        const doubleSpendCheckSetting = Setting.create(App.getString("settings-screen", "enable-double-spend-check"), "/img/terminal.png", (doubleSpendCheckIsEnabled ? App.getString("settings-screen", "enable-double-spend-check-yes") : App.getString("settings-screen", "enable-double-spend-check-no")));
+        doubleSpendCheckSetting.onClick = function() {
+            const label = doubleSpendCheckSetting.getLabel();
+
+            const dialogTemplate = SettingsScreen.editDoubleSpendCheckDialogTemplate;
+            const dialogWidget = SettingsScreen.createEditDialog(dialogTemplate, label, doubleSpendCheckIsEnabled, App.getString("settings-screen", "enable-double-spend-check-description"));
+            dialogWidget.onComplete = function() {
+                doubleSpendCheckSetting.setValue(true);
+                doubleSpendCheckSetting.setDisplayValue(App.getString("settings-screen", "enable-double-spend-check-yes"));
+                App.setDoubleSpendCheckIsEnabled(true);
+            };
+
+            const disableButton = dialogWidget.querySelector(".disable");
+            disableButton.onclick = function() {
+                doubleSpendCheckSetting.setValue(false);
+                doubleSpendCheckSetting.setDisplayValue(App.getString("settings-screen", "enable-double-spend-check-no"));
+                App.setDoubleSpendCheckIsEnabled(false);
+
+                clearDialog();
+           };
+
+            closeDialogOnEscape(dialogWidget);
+
+            clearDialog();
+            widget.appendChild(dialogWidget);
+        };
+        widget.addWidget(doubleSpendCheckSetting);
+
         // Reset Settings Widget
         const resetSetting = Setting.create(App.getString("settings-screen", "reset-data"), "/img/trash.png", App.getString("settings-screen", "reset-data-value"));
         resetSetting.onClick = function() {
@@ -404,5 +434,6 @@ App.addOnLoad(function() {
     SettingsScreen.editDestinationAddressDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-destination-address");
     SettingsScreen.editLocalCurrencyDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-local-currency");
     SettingsScreen.currencyListItemTemplate = templates.querySelector(".currency-list-item");
+    SettingsScreen.editDoubleSpendCheckDialogTemplate = templates.querySelector(".settings-screen-dialog.edit-double-spend-check");
     SettingsScreen.editResetDialogTemplate = templates.querySelector(".settings-screen-dialog.reset-data");
 });
