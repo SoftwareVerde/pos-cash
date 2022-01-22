@@ -56,6 +56,12 @@ class Http {
                 if (typeof callbackFunction == "function") {
                     callbackFunction(json);
                 }
+            })
+            .catch(function(error) {
+                if (typeof callbackFunction == "function") {
+                    const json = { wasSuccess: false, errorMessage: "No response." };
+                    callbackFunction(json);
+                }
             });
     }
 
