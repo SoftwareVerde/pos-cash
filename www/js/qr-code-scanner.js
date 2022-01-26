@@ -80,6 +80,12 @@ class QrCodeScanner {
 
             requestAnimationFrame(onNewFrame)
         });
+        mediaPromise.catch(function(exception) {
+            console.log("Camera permission is not granted.");
+            window.setTimeout(function() {
+                callback(null);
+            }, 0);
+        });
     }
 
 }

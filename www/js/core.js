@@ -108,7 +108,7 @@ class Util {
 
             if (typeof callback == "function") {
                 window.setTimeout(function() {
-                    callback(null);
+                    callback(false);
                 }, 0);
             }
         };

@@ -198,6 +198,9 @@ class SettingsScreen {
                             App.displayToast(App.getString("settings-screen", "toast-invalid-address"), true);
                         }
                     }
+                    else if (qrCode == null) { // Callback receives null on error, and false upon user-cancellation.
+                        App.displayToast(App.getString("settings-screen", "no-camera-found"), true);
+                    }
                 });
             };
 
