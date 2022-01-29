@@ -354,7 +354,7 @@ class SettingsScreen {
 
         // DoubleSpend Check Setting Widget
         const doubleSpendCheckIsEnabled = App.isDoubleSpendCheckEnabled();
-        const doubleSpendCheckSetting = Setting.create(App.getString("settings-screen", "enable-double-spend-check"), "/img/terminal.png", (doubleSpendCheckIsEnabled ? App.getString("settings-screen", "enable-double-spend-check-yes") : App.getString("settings-screen", "enable-double-spend-check-no")));
+        const doubleSpendCheckSetting = Setting.create(App.getString("settings-screen", "enable-double-spend-check"), "/img/magnifying-glass.png", (doubleSpendCheckIsEnabled ? App.getString("settings-screen", "enable-double-spend-check-yes") : App.getString("settings-screen", "enable-double-spend-check-no")));
         doubleSpendCheckSetting.onClick = function() {
             const label = doubleSpendCheckSetting.getLabel();
 
