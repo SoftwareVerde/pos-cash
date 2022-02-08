@@ -2,14 +2,6 @@
 window.MAX_SAFE_INTEGER = window.Number.MAX_SAFE_INTEGER || 9007199254740991;
 
 class Util {
-    static KeyCodes = {
-        escape: 27,
-        delete: 8,
-        tab:    9,
-        enter:  13,
-        shift:  16
-    };
-
     static cancelEvent(event) {
         if (! event.preventDefault) {
             event.returnValue = false;
@@ -128,17 +120,18 @@ class Util {
     }
 }
 
-class App {
-    static _onLoad = [];
-    static _hasLoaded = false;
-    static _exchangeRateData = null;
-    static _webSockets = [];
-    static _pendingPayment = null;
-    static _countries = null;
-    static _strings = null;
-    static _sha256 = null;
-    static _toastTimeout = null;
+(function() {
+    Util.KeyCodes = {
+        escape: 27,
+        delete: 8,
+        tab:    9,
+        enter:  13,
+        shift:  16
+    };
+})();
 
+
+class App {
     static _setAddressVersion(addressString, addressObject) {
         if (addressString.startsWith("3") || addressString.startsWith("p")) {
             addressObject.version = 1;
@@ -837,6 +830,18 @@ class App {
         }
     }
 }
+
+(function() {
+    App._onLoad = [];
+    App._hasLoaded = false;
+    App._exchangeRateData = null;
+    App._webSockets = [];
+    App._pendingPayment = null;
+    App._countries = null;
+    App._strings = null;
+    App._sha256 = null;
+    App._toastTimeout = null;
+})();
 
 App.addOnLoad(function() {
     window.setTimeout(async function() {

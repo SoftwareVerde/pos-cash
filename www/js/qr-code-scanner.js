@@ -1,7 +1,5 @@
 "use strict";
 class QrCodeScanner {
-    static _state = { };
-
     static stop() {
         const state = QrCodeScanner._state;
         if (! state.isScanning) { return; }
@@ -89,3 +87,7 @@ class QrCodeScanner {
     }
 
 }
+
+(function() {
+    QrCodeScanner._state = { };
+})();
