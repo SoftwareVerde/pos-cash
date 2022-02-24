@@ -15,7 +15,10 @@
         },
         "transactions-screen": {
             "title": "Transactions",
-            "empty": "No transactions."
+            "empty": "No transactions.",
+            "today-button": "Today",
+            "yesterday-button": "Yesterday",
+            "all-button": "All"
         },
         "settings-screen": {
             "title": "Settings",
@@ -68,7 +71,10 @@
         },
         "transactions-screen": {
             "title": "Transacciones",
-            "empty": "No hay transacciones."
+            "empty": "No hay transacciones.",
+            "today-button": "Hoy dia",
+            "yesterday-button": "Ayer",
+            "all-button": "Todos"
         },
         "settings-screen": {
             "title": "Configuraciones",
@@ -121,7 +127,10 @@
         },
         "transactions-screen": {
             "title": "取引履歴",
-            "empty": "取引の記録はありません"
+            "empty": "取引の記録はありません",
+            "today-button": "今日",
+            "yesterday-button": "昨日",
+            "all-button": "全て"
         },
         "settings-screen": {
             "title": "設定",

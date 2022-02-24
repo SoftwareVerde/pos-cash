@@ -31,6 +31,23 @@ class TransactionsScreen {
         return Date.parse(dateInput.value + " " + hourInput.value + ":" + minuteInput.value + ":00 " + (hourInput.isPm ? "PM" : "AM"));
     }
 
+    static setDatePickerValue(container, date, hour, minute, isPm) {
+        const dateInput = container.querySelector("input.date");
+        dateInput.value = date;
+
+        const hourContainer = container.querySelector(".time-input.hour");
+        const hourInput = hourContainer.querySelector("input");
+        hourInput.value = hour;
+
+        const minuteContainer = container.querySelector(".time-input.minute");
+        const minuteInput = container.querySelector("input.minute");
+        minuteInput.value = minute;
+
+        const ampmToggle = container.querySelector(".ampm-toggle");
+        ampmToggle.textContent = (isPm ? "PM" : "AM");
+        hourInput.isPm = isPm;
+    }
+
     static createDatePicker(container, onChange) {
         const dateInput = container.querySelector("input.date");
         const ampmToggle = container.querySelector(".ampm-toggle");
@@ -49,14 +66,35 @@ class TransactionsScreen {
 
         clearButton.onclick = function() {
             pickerContainer.classList.add("hidden");
+
             dateInput.value = "";
+            hourInput.value = "";
+            minuteInput.value = "";
+            hourInput.isPm = false;
+            ampmToggle.textContent = "AM";
+
             if (onChange) {
                 onChange();
             }
         };
 
+        const initializeIfEmpty = function() {
+            if (! dateInput.value) {
+                const dateString = (new Date()).toISOString().substring(0, 10);
+                dateInput.value = dateString;
+            }
+            if (! hourInput.value) {
+                hourInput.value = "12";
+            }
+            if (! minuteInput.value) {
+                minuteInput.value = "00";
+            }
+        };
+
         hourUpButton.onclick = function() {
-            const value = window.parseInt(hourInput.value);
+            initializeIfEmpty();
+
+            const value = window.parseInt(hourInput.value || "0");
             const newValue = (value % 12) + 1;
             hourInput.value = (newValue < 10 ? "0" + newValue : newValue);
 
@@ -66,7 +104,9 @@ class TransactionsScreen {
         };
 
         hourDownButton.onclick = function() {
-            const value = window.parseInt(hourInput.value);
+            initializeIfEmpty();
+
+            const value = window.parseInt(hourInput.value || "0");
             const newValue = (value > 1 ? (value - 1) : 12);
             hourInput.value = (newValue < 10 ? "0" + newValue : newValue);
 
@@ -76,8 +116,17 @@ class TransactionsScreen {
         };
 
         minuteUpButton.onclick = function() {
-            const value = window.parseInt(minuteInput.value);
-            const newValue = ((value + 5) % 60);
+            initializeIfEmpty();
+
+            let value = window.parseInt(minuteInput.value || "0");
+            if (value % 5 != 0) {
+                value = value + (5 - (value % 5));
+            }
+            else {
+                value = value + 5;
+            }
+
+            const newValue = (value % 60);
             minuteInput.value = (newValue < 10 ? "0" + newValue : newValue);
 
             if (onChange) {
@@ -86,8 +135,17 @@ class TransactionsScreen {
         };
 
         minuteDownButton.onclick = function() {
-            const value = window.parseInt(minuteInput.value);
-            const newValue = (value > 0 ? (value - 5) : 55);
+            initializeIfEmpty();
+
+            let value = window.parseInt(minuteInput.value || "0");
+            if (value % 5 != 0) {
+                value = value - (value % 5);
+            }
+            else {
+                value = value - 5;
+            }
+
+            const newValue = (value >= 0 ? value : 55);
             minuteInput.value = (newValue < 10 ? "0" + newValue : newValue);
 
             if (onChange) {
@@ -120,6 +178,8 @@ class TransactionsScreen {
         dateInput.onclick = function() {
             pickerContainer.classList.remove("hidden");
         };
+
+        clearButton.onclick();
     }
 
     static create() {
@@ -155,6 +215,15 @@ class TransactionsScreen {
         const startFilter = dateFilter.querySelector(".start");
         const endFilter = dateFilter.querySelector(".end");
 
+        const helperButtonsContainer = widget.querySelector(".helper-buttons");
+        const todayButton = helperButtonsContainer.querySelector(".today");
+        const yesterdayButton = helperButtonsContainer.querySelector(".yesterday");
+        const allButton = helperButtonsContainer.querySelector(".all");
+
+        todayButton.textContent = App.getString("transactions-screen", "today-button");
+        yesterdayButton.textContent = App.getString("transactions-screen", "yesterday-button");
+        allButton.textContent = App.getString("transactions-screen", "all-button");
+
         const onFilterChange = function() {
             const startDate = TransactionsScreen.getDatePickerValue(startFilter);
             const endDate = TransactionsScreen.getDatePickerValue(endFilter);
@@ -174,6 +243,32 @@ class TransactionsScreen {
                     completedPaymentsListElement.appendChild(itemElement);
                 }
             }
+        };
+
+        todayButton.onclick = function() {
+            const dateString = (new Date()).toISOString().substring(0, 10);
+            TransactionsScreen.setDatePickerValue(startFilter, dateString, "12", "00", false);
+            TransactionsScreen.setDatePickerValue(endFilter, dateString, "11", "59", true);
+
+            onFilterChange();
+        };
+
+        yesterdayButton.onclick = function() {
+            const todayDate = new Date();
+            todayDate.setDate(todayDate.getDate() - 1);
+
+            const dateString = todayDate.toISOString().substring(0, 10);
+            TransactionsScreen.setDatePickerValue(startFilter, dateString, "12", "00", false);
+            TransactionsScreen.setDatePickerValue(endFilter, dateString, "11", "59", true);
+
+            onFilterChange();
+        };
+
+        allButton.onclick = function() {
+            TransactionsScreen.setDatePickerValue(startFilter, "", "", "", false);
+            TransactionsScreen.setDatePickerValue(endFilter, "", "", "", false);
+
+            onFilterChange();
         };
 
         TransactionsScreen.createDatePicker(startFilter, onFilterChange);

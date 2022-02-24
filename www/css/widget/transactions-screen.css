@@ -80,6 +80,26 @@
     text-align: right;
 }
 
+.transactions-screen .helper-buttons {
+    display: flex;
+    width: auto;
+}
+.transactions-screen .helper-buttons span {
+    user-select: none;
+    padding: 0.25em;
+    min-width: 5em;
+    border: 0;
+    text-align: center;
+    letter-spacing: 1px;
+    border-radius: 0.25em;
+    background-color: #3D3D3D;
+    color: #aaa;
+    border-color: #303030;
+    margin: 0.5em;
+    line-height: 1.25em;
+    cursor: pointer;
+}
+
 .transactions-screen .date-filter .clear,
 .transactions-screen .date-filter .ampm-toggle,
 .transactions-screen .date-filter input {
