@@ -200,6 +200,10 @@
         display: none !important;
     }
 
+    .transactions-screen .helper-buttons {
+        display: none !important;
+    }
+
     * {
         background-color: #FFFFFF !important;
         color: #000000 !important;
