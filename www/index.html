@@ -46,6 +46,9 @@
         <link rel="stylesheet" href="/css/widget/menu.css" />
         <script src="/js/widget/menu.js"></script>
 
+        <link rel="stylesheet" href="/css/datepicker.css" />
+        <script src="/js/datepicker.js"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
         <title>BCH Merchant POS</title>
@@ -154,6 +157,42 @@
             </div>
             <div class="transactions-screen">
                 <div class="navigation-container"><span class="transactions-back-icon">&#8592;</span><span class="text">Transactions</span></div>
+                <div class="date-filter">
+                    <div class="start">
+                        <input type="text" class="date" placeholder="Start Date" readonly />
+                        <div class="time-input hour">
+                            <input type="text" class="hour" value="12" readonly />
+                            <span class="up">&#8963;</span>
+                            <span class="down">&#8964;</span>
+                        </div>
+                        :
+                        <div class="time-input minute">
+                            <input class="minute" type="text" value="00" readonly />
+                            <span class="up">&#8963;</span>
+                            <span class="down">&#8964;</span>
+                        </div>
+                        <span class="ampm-toggle">AM</span>
+                        <span class="clear">X</span>
+                        <div class="picker-container"></div>
+                    </div>
+                    <div class="end">
+                        <input type="text" class="date" placeholder="End Date" readonly />
+                        <div class="time-input hour">
+                            <input type="text" class="hour" value="12" readonly />
+                            <span class="up">&#8963;</span>
+                            <span class="down">&#8964;</span>
+                        </div>
+                        :
+                        <div class="time-input minute">
+                            <input class="minute" type="text" value="00" readonly />
+                            <span class="up">&#8963;</span>
+                            <span class="down">&#8964;</span>
+                        </div>
+                        <span class="ampm-toggle">AM</span>
+                        <span class="clear">X</span>
+                        <div class="picker-container"></div>
+                    </div>
+                </div>
                 <div class="completed-payments-list"></div>
                 <img class="print" src="/img/print.png" />
             </div>
