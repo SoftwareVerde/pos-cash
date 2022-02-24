@@ -51,3 +51,29 @@
     justify-content: center;
     display: flex;
 }
+
+.transactions-screen .print {
+    display: block;
+    margin: auto;
+    margin-top: 1em;
+    width: 3em;
+    cursor: pointer;
+    background-color: #303030;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    position: absolute;
+    top: 0;
+    right: 5em;
+}
+
+@media print {
+    .transactions-screen .navigation-container,
+    .transactions-screen .print {
+        display: none;
+    }
+
+    * {
+        background-color: #FFFFFF;
+        color: #000000;
+    }
+}

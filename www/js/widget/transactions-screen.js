@@ -36,7 +36,7 @@ class TransactionsScreen {
 
         const completedPayments = App.getCompletedPayments();
         if (completedPayments.length == 0) {
-            completedPaymentsListElement.textContent = "No transactions.";
+            completedPaymentsListElement.textContent = App.getString("transactions-screen", "empty");
         }
         else {
             for (let i = 0; i < completedPayments.length; i += 1) {
@@ -46,6 +46,12 @@ class TransactionsScreen {
                 completedPaymentsListElement.appendChild(itemElement);
             }
         }
+
+        const printButton = widget.querySelector(".print");
+        printButton.onclick = function() {
+            console.log("print");
+            window.print();
+        };
 
         return widget;
     }

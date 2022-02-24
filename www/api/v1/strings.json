@@ -14,7 +14,8 @@
             "toast-invalid-pin": "Incorrect PIN Code."
         },
         "transactions-screen": {
-            "title": "Transactions"
+            "title": "Transactions",
+            "empty": "No transactions."
         },
         "settings-screen": {
             "title": "Settings",
@@ -66,7 +67,8 @@
             "toast-invalid-pin": "Código PIN incorrecto"
         },
         "transactions-screen": {
-            "title": "Transacciones"
+            "title": "Transacciones",
+            "empty": "No hay transacciones."
         },
         "settings-screen": {
             "title": "Configuraciones",
@@ -101,6 +103,59 @@
         "pin-screen": {
             "pin-label": "Crear código PIN",
             "confirm-pin-label": "Confirmar código PIN"
+        }
+    },
+    "japanese": {
+        "checkout-screen": {
+            "checkout-label": "金額を入力してください",
+            "checkout-button": "会計する",
+            "toast-invalid-amount": "金額をお確かめください",
+            "toast-invalid-address": "送金先アドレスが指定されていません"
+        },
+        "menu": {
+            "transactions": "取引履歴",
+            "settings": "設定",
+            "pin-label": "PINコードを入力",
+            "close-button": "閉じる",
+            "toast-invalid-pin": "PINコードが違います"
+        },
+        "transactions-screen": {
+            "title": "取引履歴",
+            "empty": "取引の記録はありません"
+        },
+        "settings-screen": {
+            "title": "設定",
+            "merchant-name": "店舗名",
+            "destination-address": "送金先アドレス",
+            "local-currency": "所在国",
+            "pin-code": "PINコード",
+            "reset-data": "リセット",
+            "reset-data-value": "アプリ内全てのデータを消去",
+            "reset-data-text": "設定を全てリセットしますか？",
+            "advertise": "宣伝する",
+            "advertise-value": "お店をmap.bitcoin.comに登録しましょう",
+            "save-button": "保存して閉じる",
+            "toast-invalid-address": "無効なアドレス",
+            "toast-address-copied": "アドレスをコピーしました",
+            "no-camera-found": "カメラの初期化に失敗しました",
+            "enable-double-spend-check": "二重支払いチェック",
+            "enable-double-spend-check-description": "不正な支払いをチェックする機能を有効にします。このオプションを有効にすると、会計時に3秒間の遅延が発生します。",
+            "enable-double-spend-check-no": "無効",
+            "enable-double-spend-check-yes": "有効"
+        },
+        "payment-screen": {
+            "payment-label": "スキャンしてください。",
+            "toast-copy-payment": "テキストをコピーしました"
+        },
+        "payment-received-screen": {
+            "success-label": "支払い完了しました。ありがとうございました",
+            "failure-label": "支払いを完了出来ませんでした",
+            "double-spend-checker-label": "支払い確認中です",
+            "done-button": "完了"
+        },
+        "pin-screen": {
+            "pin-label": "PINコードを作成",
+            "confirm-pin-label": "PINコードを確認"
         }
     }
 }
