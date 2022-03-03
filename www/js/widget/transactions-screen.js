@@ -243,6 +243,10 @@ class TransactionsScreen {
                     completedPaymentsListElement.appendChild(itemElement);
                 }
             }
+
+            todayButton.classList.remove("active");
+            yesterdayButton.classList.remove("active");
+            allButton.classList.remove("active");
         };
 
         todayButton.onclick = function() {
@@ -251,6 +255,7 @@ class TransactionsScreen {
             TransactionsScreen.setDatePickerValue(endFilter, dateString, "11", "59", true);
 
             onFilterChange();
+            todayButton.classList.add("active");
         };
 
         yesterdayButton.onclick = function() {
@@ -262,6 +267,7 @@ class TransactionsScreen {
             TransactionsScreen.setDatePickerValue(endFilter, dateString, "11", "59", true);
 
             onFilterChange();
+            yesterdayButton.classList.add("active");
         };
 
         allButton.onclick = function() {
@@ -269,6 +275,7 @@ class TransactionsScreen {
             TransactionsScreen.setDatePickerValue(endFilter, "", "", "", false);
 
             onFilterChange();
+            allButton.classList.add("active");
         };
 
         TransactionsScreen.createDatePicker(startFilter, onFilterChange);

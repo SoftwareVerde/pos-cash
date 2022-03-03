@@ -65,6 +65,9 @@
     top: 0;
     right: 5em;
 }
+.transactions-screen .print:hover {
+    background-color: #3A3A3A;
+}
 
 .transactions-screen .date-filter {
     display: flex;
@@ -93,11 +96,15 @@
     letter-spacing: 1px;
     border-radius: 0.25em;
     background-color: #3D3D3D;
-    color: #aaa;
+    color: #AAAAAA;
     border-color: #303030;
     margin: 0.5em;
     line-height: 1.25em;
     cursor: pointer;
+}
+.transactions-screen .helper-buttons span.active {
+    background-color: #09C58A;
+    color: #303030;
 }
 
 .transactions-screen .date-filter .clear,
@@ -111,7 +118,7 @@
     letter-spacing: 1px;
     border-radius: 0.25em;
     background-color: #3D3D3D;
-    color: #aaa;
+    color: #AAAAAA;
     border-color: #303030;
     margin: 0.5em;
     line-height: 1.25em;
