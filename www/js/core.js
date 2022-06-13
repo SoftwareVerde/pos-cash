@@ -397,7 +397,7 @@ class App {
 
             const doubleSpendProofs = data.doubleSpendProofs;
             callback(doubleSpendProofs.length != 0);
-        });
+        }, 2000);
     }
 
     static updateExchangeRate(callback) {
