@@ -1,4 +1,5 @@
 [
+ { "currency":"BCH", "decimals":8, "iso":"BCH", "lang":"en", "name":"Bitcoin Cash" },
  { "currency":"AFN", "decimals":0, "iso":"AF", "lang":"fa-AF", "name":"Afghanistan" },
  { "currency":"ALL", "decimals":0, "iso":"AL", "lang":"sq", "name":"Albania" },
  { "currency":"DZD", "decimals":2, "iso":"DZ", "lang":"ar-DZ", "name":"Algeria" },

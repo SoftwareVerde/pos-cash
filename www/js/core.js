@@ -556,7 +556,10 @@ class App {
                 addr: null
             };
 
-            const destinationAddress = App.getDestinationAddress();
+            let destinationAddress = App.getDestinationAddress();
+            if (destinationAddress.startsWith("q")) {
+                destinationAddress = "bitcoincash:" + destinationAddress;
+            }
             message.addr = destinationAddress;
 
             webSocket.send(JSON.stringify(message));
@@ -753,7 +756,7 @@ class App {
         }
 
         const bchFormatOptions = { maximumFractionDigits: 8, minimumFractionDigits: 8 };
-        const bchDisplayString = bchAmountFloat.toLocaleString(undefined, bchFormatOptions);
+        const bchDisplayString = (bchAmountFloat || 0).toLocaleString(undefined, bchFormatOptions);
         const bchValue = bchAmountFloat.toFixed(8);
 
         if (decimalSeparator == ",") {
