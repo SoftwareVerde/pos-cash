@@ -484,6 +484,8 @@ class App {
 
         webSocket = App.listenForTransactionsViaBlockchainDotInfo();
         App._webSockets.push(webSocket);
+
+        App._isListeningForTransactions = true;
     }
 
     static listenForTransactionsViaBitcoinVerdeDotOrg() {
@@ -562,6 +564,7 @@ class App {
             }
             message.addr = destinationAddress;
 
+            webSocket.timeConnected = Date.now();
             webSocket.send(JSON.stringify(message));
         };
 
@@ -584,6 +587,18 @@ class App {
 
         webSocket.onclose = function() {
             console.log("WebSocket closed.");
+
+            if (App._isListeningForTransactions) {
+                var now = Date.now();
+                const msAlive = (now - webSocket.timeConnected);
+
+                if (msAlive > 5000) {
+                    // Reconnect.
+                    console.log("Reconnecting.");
+                    const webSocket = App.listenForTransactionsViaBlockchainDotInfo();
+                    App._webSockets.push(webSocket);
+                }
+            }
         };
 
         return webSocket;
@@ -630,6 +645,7 @@ class App {
     }
 
     static stopListeningForTransactions() {
+        App._isListeningForTransactions = false;
         const webSockets = App._webSockets;
         for (let i = 0; i < webSockets.length; i += 1) {
             const webSocket = webSockets[i];
@@ -840,6 +856,7 @@ class App {
     App._hasLoaded = false;
     App._exchangeRateData = null;
     App._webSockets = [];
+    App._isListeningForTransactions = false;
     App._pendingPayment = null;
     App._countries = null;
     App._strings = null;
